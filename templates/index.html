@@ -5,172 +5,184 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OKR Studio — Conexão.CX</title>
 <style>
+  /* RESET & BASE */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #f9f8f6; --surface: #ffffff; --surface-2: #f4f3f0;
-    --border: rgba(0,0,0,0.08); --border-strong: rgba(0,0,0,0.14);
-    --text-primary: #1e1e1e; --text-secondary: #6b6b66; --text-tertiary: #a8a8a2;
-    --accent: #7371ff; --accent-bg: #EEEDFE; --accent-light: #AFA9EC;
-    --green: #bef533; --green-bg: #E1F5EE; --green-text: #0F6E56;
-    --amber-bg: #FAEEDA; --amber-text: #854F0B;
-    --gray-bg: #F1EFE8; --gray-text: #5F5E5A;
-    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px;
+    --bg: #f8f9fa; /* Fundo mais leve e sofisticado */
+    --surface: #ffffff; 
+    --surface-hover: #f3f4f6;
+    --surface-2: #f9fafb;
+    --border: #e5e7eb; 
+    --border-strong: #d1d5db;
+    
+    --text-primary: #111827; 
+    --text-secondary: #4b5563; 
+    --text-tertiary: #9ca3af;
+    
+    --accent: #7371ff; 
+    --accent-hover: #5b59cc;
+    --accent-bg: #eef2ff; 
+    --accent-ring: rgba(115, 113, 255, 0.2);
+    
+    --green: #bef533; 
+    --green-bg: #f0fdf4; 
+    --green-text: #166534;
+    
+    --danger: #ff43c0;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    
+    --radius-sm: 6px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px;
   }
-  html { font-size: 16px; -webkit-font-smoothing: antialiased; }
-  body { font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; }
+  
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body { font-family: 'Helvetica Neue', Helvetica, -apple-system, Arial, sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; }
   .layout { display: flex; min-height: 100vh; }
   
-  /* Sidebar */
-  .sidebar { width: 220px; flex-shrink: 0; background: var(--surface); border-right: 0.5px solid var(--border); padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 2rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  /* SIDEBAR Premium */
+  .sidebar { width: 240px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 2rem 1.5rem; display: flex; flex-direction: column; gap: 2.5rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
   .sidebar-logo { display: flex; align-items: center; gap: 0; }
-  .logo-text { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
-  .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
-  .nav-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); padding: 0 8px; margin-bottom: 6px; margin-top: 8px; }
-  .nav-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--radius-sm); font-size: 13px; color: var(--text-secondary); cursor: pointer; transition: background 0.15s, color 0.15s; text-decoration: none; font-family: inherit;}
-  .nav-item:hover { background: var(--surface-2); color: var(--text-primary); }
-  .nav-item.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
-  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.4; flex-shrink: 0; }
+  .logo-text { font-size: 15px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
+  .nav-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); padding: 0 10px; margin-bottom: 8px; margin-top: 12px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.2s ease; text-decoration: none; }
+  .nav-item:hover { background: var(--surface-hover); color: var(--text-primary); }
+  .nav-item.active { background: var(--surface-hover); color: var(--accent); font-weight: 600; }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0; flex-shrink: 0; transition: opacity 0.2s ease; }
   .nav-item.active .nav-dot { opacity: 1; }
-  .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 0.5px solid var(--border); }
-  .user-pill { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--radius-sm); }
-  .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-bg); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
-  .user-name { font-size: 12px; font-weight: 500; color: var(--text-primary); }
-  .user-role { font-size: 11px; color: var(--text-tertiary); }
   
-  /* Main & Header */
-  .main { flex: 1; padding: 2.5rem 3rem; max-width: 1000px; overflow-x: hidden; }
-  .page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; padding-bottom: 2rem; margin-bottom: 2rem; border-bottom: 0.5px solid var(--border); }
-  .page-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
-  .page-title { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); line-height: 1.2; }
-  .page-cycle { font-size: 13px; color: var(--text-tertiary); margin-top: 4px; }
-  .header-actions { display: flex; gap: 8px; flex-shrink: 0; padding-top: 4px; }
+  .sidebar-footer { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  .user-pill { display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: var(--radius-sm); transition: background 0.2s; }
+  .user-pill:hover { background: var(--surface-hover); }
+  .avatar { width: 32px; height: 32px; border-radius: 8px; background: var(--accent-bg); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+  .user-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+  .user-role { font-size: 11px; font-weight: 400; color: var(--text-tertiary); }
   
-  /* Buttons */
-  .btn { display: inline-flex; align-items: center; gap: 6px; font-family: inherit; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; padding: 7px 16px; border-radius: 100px; border: 0.5px solid var(--border-strong); background: var(--surface); color: var(--text-secondary); cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s; white-space: nowrap; text-decoration: none;}
-  .btn:hover { background: var(--surface-2); color: var(--text-primary); }
-  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .btn-primary:hover { background: #5b59cc; border-color: #5b59cc; color: #fff; }
-  .btn-ghost { background: none; border: none; color: var(--accent); padding: 4px 0; font-size: 11px; font-weight: 600; cursor: pointer; font-family: inherit; letter-spacing: 0.02em; }
-  .btn-ghost:hover { text-decoration: underline; }
-  .btn-ghost-muted { background: none; border: none; color: var(--text-tertiary); padding: 4px 0; font-size: 11px; font-weight: 400; cursor: pointer; font-family: inherit; }
-  .btn-ghost-muted:hover { color: var(--accent); }
-  .btn-dashed { background: none; border: 0.5px dashed var(--border-strong); color: var(--text-tertiary); width: 100%; justify-content: center; border-radius: var(--radius-sm); padding: 9px; font-size: 11px; font-weight: 400; cursor: pointer; font-family: inherit; transition: border-color 0.15s, color 0.15s; }
-  .btn-dashed:hover { border-color: var(--accent); color: var(--accent); }
+  /* MAIN & HEADER */
+  .main { flex: 1; padding: 3rem 4rem; max-width: 1100px; overflow-x: hidden; }
+  .page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; padding-bottom: 2rem; margin-bottom: 2rem; }
+  .page-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .page-title { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; color: var(--text-primary); line-height: 1.2; }
+  .page-cycle { font-size: 13px; font-weight: 500; color: var(--text-tertiary); margin-top: 6px; }
+  .header-actions { display: flex; gap: 12px; flex-shrink: 0; align-items: center; }
   
-  /* Dept pills */
-  .dept-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2.5rem; }
-  .dept-pill { padding: 6px 18px; border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.15s, color 0.15s; border: 0.5px solid transparent; background: var(--surface); color: var(--text-secondary); border-color: var(--border); text-decoration: none;}
-  .dept-pill:hover { background: var(--surface-2); color: var(--text-primary); }
-  .dept-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  /* BUTTONS & ACTIONS (SaaS Style) */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: inherit; font-size: 12px; font-weight: 600; padding: 8px 20px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all 0.2s ease; text-decoration: none; box-shadow: var(--shadow-sm); }
+  .btn:hover { background: var(--surface-hover); border-color: var(--border-strong); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn-primary { background: var(--text-primary); color: #fff; border: 1px solid var(--text-primary); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
   
-  /* Section header */
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
-  .section-title { display: flex; align-items: center; gap: 10px; }
-  .section-title h2 { font-size: 16px; font-weight: 600; color: var(--text-primary); }
-  .badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 100px; }
+  /* AÇÕES EM TEXTO (Sem Emojis) */
+  .action-link { font-family: inherit; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); background: none; border: none; cursor: pointer; transition: color 0.2s ease; text-decoration: none; padding: 4px 8px; border-radius: 4px; }
+  .action-link:hover { color: var(--accent); background: var(--accent-bg); }
+  .action-link.danger:hover { color: var(--danger); background: rgba(255, 67, 192, 0.08); }
+  
+  /* DEPT PILLS */
+  .dept-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .dept-pill { padding: 8px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; border: 1px solid var(--border); background: var(--surface); color: var(--text-secondary); text-decoration: none; box-shadow: var(--shadow-sm); }
+  .dept-pill:hover { background: var(--surface-hover); border-color: var(--border-strong); transform: translateY(-1px); }
+  .dept-pill.active { background: var(--text-primary); color: #fff; border-color: var(--text-primary); box-shadow: var(--shadow-md); }
+  
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .section-title { display: flex; align-items: center; gap: 12px; }
+  .section-title h2 { font-size: 18px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
+  .badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 100px; }
   .badge-purple { background: var(--accent-bg); color: var(--accent); }
   
-  /* Status tags */
-  .status-tag { display: inline-flex; align-items: center; justify-content: center; width: 90px; gap: 4px; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+  /* STATUS TAGS */
+  .status-tag { display: inline-flex; align-items: center; justify-content: center; min-width: 90px; padding: 4px 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 6px; white-space: nowrap; flex-shrink: 0; }
   .status-done { background: var(--green-bg); color: var(--green-text); }
   .status-doing { background: var(--accent-bg); color: var(--accent); }
-  .status-todo { background: var(--gray-bg); color: var(--gray-text); }
+  .status-todo { background: #f3f4f6; color: var(--text-secondary); }
   .status-paused { background: var(--amber-bg); color: var(--amber-text); }
   
-  /* Obj Card & Layout */
-  .obj-list { display: flex; flex-direction: column; gap: 1.25rem; }
-  .obj-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color 0.2s; }
-  .obj-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.5rem; }
-  .obj-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 5px; }
-  .obj-title { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.4; margin-bottom: 0; }
-  .obj-progress-wrap { display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding-top: 2px; }
+  /* OBJECTIVE CARD (Premium Shadow) */
+  .obj-list { display: flex; flex-direction: column; gap: 1.5rem; }
+  .obj-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); transition: transform 0.2s ease, box-shadow 0.2s ease; overflow: hidden; }
+  .obj-card:hover { box-shadow: var(--shadow-lg); }
+  
+  .obj-card-header { display: flex; align-items: flex-start; justify-content: space-between; padding: 1.5rem 2rem; gap: 1rem; }
+  .obj-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+  .obj-title { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.4; margin-bottom: 0; letter-spacing: -0.01em; }
+  
+  .obj-progress-wrap { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
   .obj-progress-label { text-align: right; }
-  .obj-progress-label span:first-child { display: block; font-size: 10px; color: var(--text-tertiary); margin-bottom: 2px; }
-  .obj-progress-label span:last-child { font-size: 18px; font-weight: 600; color: var(--text-primary); font-family: inherit; }
-  .ring-wrap { width: 42px; height: 42px; flex-shrink: 0; }
+  .obj-progress-label span:first-child { display: block; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); margin-bottom: 2px; }
+  .obj-progress-label span:last-child { font-size: 20px; font-weight: 700; color: var(--text-primary); font-family: inherit; }
+  .ring-wrap { width: 46px; height: 46px; flex-shrink: 0; }
   .ring-wrap svg { display: block; }
-  .divider { height: 0.5px; background: var(--border); }
   
-  /* NOVO: Footer Expansível */
-  .obj-card-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 1.5rem; border-top: 0.5px solid var(--border); background: var(--surface); }
-  .obj-footer-meta { font-size: 11px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; }
-
-  /* KR Section */
-  .kr-section { padding: 1.25rem 1.5rem; }
-  .kr-section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 10px; }
-  .kr-list { display: flex; flex-direction: column; gap: 10px; }
-  .kr-item { background: var(--surface-2); border-radius: var(--radius-md); padding: 1rem 1.25rem; }
-  .kr-item-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-  .kr-title { font-size: 13px; font-weight: 600; color: var(--text-primary); flex: 1; line-height: 1.4; }
-  .kr-numbers { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-  .kr-current { font-size: 12px; color: var(--text-tertiary); font-family: inherit; }
-  .kr-pct { font-size: 13px; font-weight: 600; color: var(--text-primary); font-family: inherit; min-width: 36px; text-align: right; }
+  .divider { height: 1px; background: var(--border); border: none; }
   
-  /* Progress Bar */
-  .progress-bar { height: 3px; background: rgba(0,0,0,0.07); border-radius: 100px; overflow: hidden; margin-bottom: 12px; }
-  .progress-fill { height: 100%; background: var(--green); border-radius: 100px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+  /* EXPAND/COLLAPSE FOOTER */
+  .obj-card-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 2rem; background: var(--surface-2); border-top: 1px solid var(--border); }
+  .obj-footer-meta { font-size: 11px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.05em; text-transform: uppercase; }
   
-  /* Tasks */
-  .task-list { display: flex; flex-direction: column; }
-  .task-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-top: 0.5px solid var(--border); position: relative; }
-  .task-desc { font-size: 12px; color: var(--text-secondary); flex: 1; line-height: 1.4; }
-  .task-meta { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; flex-shrink: 0; font-family: inherit; width: 80px;}
-  .task-link { font-size: 10px; font-weight: 600; color: var(--accent); text-decoration: none; flex-shrink: 0; }
-  .task-link:hover { text-decoration: underline; }
-  .task-edit-btn { font-size: 10px; font-weight: 600; color: transparent; background: none; border: none; cursor: pointer; font-family: inherit; transition: color 0.15s; flex-shrink: 0; padding: 0; }
-  .task-row:hover .task-edit-btn { color: #a8a8a2; }
-  .task-row:hover .task-edit-btn:hover { color: #ff43c0; }
+  /* KR SECTION */
+  .kr-section { padding: 1.5rem 2rem; background: var(--surface); }
+  .kr-section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 12px; }
+  .kr-list { display: flex; flex-direction: column; gap: 12px; }
   
-  /* Forms */
-  .edit-form { display: none; align-items: center; gap: 6px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px; margin: 4px 0; }
+  .kr-item { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; transition: background 0.2s ease; }
+  .kr-item:hover { background: var(--surface); box-shadow: var(--shadow-sm); }
+  .kr-item-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  .kr-title { font-size: 14px; font-weight: 600; color: var(--text-primary); flex: 1; line-height: 1.4; }
+  
+  .kr-numbers { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .kr-current { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+  .kr-pct { font-size: 14px; font-weight: 700; color: var(--accent); min-width: 40px; text-align: right; }
+  
+  .progress-bar { height: 6px; background: #e5e7eb; border-radius: 100px; overflow: hidden; margin-bottom: 16px; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 100px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+  
+  /* TASKS (Sleek List) */
+  .task-list { display: flex; flex-direction: column; gap: 4px; }
+  .task-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--radius-sm); transition: background 0.2s ease; }
+  .task-row:hover { background: var(--surface); box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin: -1px; } /* Ajuste visual suave no hover */
+  .task-desc { font-size: 13px; font-weight: 500; color: var(--text-secondary); flex: 1; line-height: 1.4; }
+  .task-meta { font-size: 11px; font-weight: 500; color: var(--text-tertiary); white-space: nowrap; flex-shrink: 0; width: 85px; }
+  
+  /* FORMS & INPUTS (Modern Focus Rings) */
+  .form-input, .form-select { 
+    font-family: inherit; font-size: 12px; font-weight: 500; padding: 8px 12px; 
+    border: 1px solid var(--border); border-radius: var(--radius-sm); 
+    background: var(--surface-2); color: var(--text-primary); 
+    outline: none; transition: all 0.2s ease; 
+  }
+  .form-input:focus, .form-select:focus { background: var(--surface); border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); }
+  
+  .edit-form { display: none; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; margin: 4px 0; box-shadow: var(--shadow-sm); }
   .edit-form.visible { display: flex; flex-wrap: wrap; }
-  .form-input { font-family: inherit; font-size: 11px; padding: 5px 8px; border: 0.5px solid var(--border-strong); border-radius: 6px; background: var(--surface); color: var(--text-primary); outline: none; transition: border-color 0.15s; }
-  .form-input:focus { border-color: var(--accent); }
-  .form-select { font-family: inherit; font-size: 11px; padding: 5px 8px; border: 0.5px solid var(--border-strong); border-radius: 6px; background: var(--surface); color: var(--text-primary); outline: none; cursor: pointer; }
-  .btn-save-sm { background: var(--accent); color: #fff; border: none; border-radius: 6px; font-family: inherit; font-size: 10px; font-weight: 600; padding: 5px 12px; cursor: pointer; white-space: nowrap; }
-  .btn-save-sm:hover { background: #5b59cc; }
-  .btn-cancel-sm { background: none; border: none; color: var(--text-tertiary); font-family: inherit; font-size: 10px; cursor: pointer; padding: 0 4px; }
-  .add-task-form { display: none; margin-top: 6px; }
-  .add-task-form.visible { display: flex; flex-wrap: wrap; gap: 6px; }
-  .add-task-form .form-input:first-child { flex: 1; min-width: 160px; }
   
-  /* KR Actions */
-  .kr-edit-form { display: none; align-items: center; gap: 6px; background: #FEF0F9; border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 10px; }
-  .kr-edit-form.visible { display: flex; flex-wrap: wrap; }
-  .kr-actions { display: flex; gap: 10px; margin-bottom: 8px; }
-  .kr-action-btn { font-size: 10px; font-weight: 600; background: none; border: none; cursor: pointer; font-family: inherit; color: var(--text-tertiary); padding: 0; transition: color 0.15s; }
-  .kr-action-btn:hover { color: var(--accent); }
-  .kr-action-btn.edit-color:hover { color: #ff43c0; }
+  .btn-save-sm { background: var(--text-primary); color: #fff; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 11px; font-weight: 600; padding: 8px 16px; cursor: pointer; transition: background 0.2s; }
+  .btn-save-sm:hover { background: var(--accent); }
   
-  /* New Forms */
-  .new-kr-form { display: none; flex-direction: column; gap: 8px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; }
-  .new-kr-form.visible { display: flex; }
-  .new-kr-row { display: flex; gap: 8px; flex-wrap: wrap; }
-  .new-obj-form { display: none; align-items: center; gap: 10px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
-  .new-obj-form.visible { display: flex; }
-  .new-obj-form .form-input { font-size: 14px; flex: 1; }
+  .add-task-form, .new-kr-form, .new-obj-form { display: none; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow-sm); }
+  .add-task-form.visible, .new-kr-form.visible, .new-obj-form.visible { display: flex; flex-wrap: wrap; }
   
-  /* Modals */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.25); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 100; align-items: center; justify-content: center; padding: 2rem; }
-  .modal-overlay.visible { display: flex; }
-  .modal { background: var(--surface); border-radius: var(--radius-xl); padding: 2.5rem; width: 100%; max-width: 480px; box-shadow: 0 24px 80px rgba(0,0,0,0.12); }
+  /* MODALS (Glassmorphism effect) */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(17, 24, 39, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center; padding: 2rem; opacity: 0; transition: opacity 0.2s ease; }
+  .modal-overlay.visible { display: flex; opacity: 1; }
+  .modal { background: var(--surface); border-radius: var(--radius-xl); padding: 3rem; width: 100%; max-width: 500px; box-shadow: var(--shadow-lg); transform: scale(0.95); transition: transform 0.2s ease; }
+  .modal-overlay.visible .modal { transform: scale(1); }
   .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
-  .modal-title { font-size: 18px; font-weight: 600; color: var(--text-primary); }
-  .modal-close { background: none; border: none; font-size: 18px; color: var(--text-tertiary); cursor: pointer; line-height: 1; font-family: inherit; padding: 0; }
+  .modal-title { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+  .modal-close { background: none; border: none; font-size: 24px; font-weight: 300; color: var(--text-tertiary); cursor: pointer; line-height: 1; transition: color 0.2s; }
   .modal-close:hover { color: var(--text-primary); }
-  .modal-field { margin-bottom: 1.25rem; }
-  .modal-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-tertiary); margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
-  .modal-input { width: 100%; font-family: inherit; font-size: 15px; padding: 12px 0; border: none; border-bottom: 0.5px solid var(--border-strong); background: transparent; color: var(--text-primary); outline: none; transition: border-color 0.15s; }
-  .modal-input:focus { border-bottom-color: var(--accent); }
-  .dept-item-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .modal-field { margin-bottom: 1.5rem; }
+  .modal-label { display: block; font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .modal-input { width: 100%; font-family: inherit; font-size: 15px; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--text-primary); outline: none; transition: all 0.2s; }
+  .modal-input:focus { background: var(--surface); border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); }
   
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .animate-in { animation: fadeIn 0.4s ease both; }
-  .obj-card { animation: fadeIn 0.35s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-in { animation: fadeIn 0.4s ease-out forwards; }
   
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; }
 </style>
 </head>
 <body>
@@ -180,7 +192,7 @@
   <aside class="sidebar">
     <div class="sidebar-logo">
       <span class="logo-text">
-        <span style="color: #1e1e1e;">{{ session.client_name }}</span>
+        <span>{{ session.client_name }}</span>
       </span>
     </div>
 
@@ -197,15 +209,15 @@
     </nav>
 
     <div class="sidebar-footer">
-      <div class="user-pill" style="justify-content: space-between;">
-        <div style="display: flex; gap: 8px; align-items: center;">
+      <div class="user-pill">
+        <div style="display: flex; gap: 10px; align-items: center;">
             <div class="avatar">{{ session.user_name[:2] | upper }}</div>
             <div>
               <p class="user-name">{{ session.user_name }}</p>
-              <p class="user-role">Logado</p>
+              <p class="user-role">Online</p>
             </div>
         </div>
-        <a href="{{ url_for('logout') }}" style="font-size: 10px; color: #ff43c0; text-decoration: none; font-weight: bold;">SAIR</a>
+        <a href="{{ url_for('logout') }}" class="action-link danger">Sair</a>
       </div>
     </div>
   </aside>
@@ -214,18 +226,18 @@
 
     <div class="page-header">
       <div>
-        <p class="page-eyebrow">Estratégia anual</p>
+        <p class="page-eyebrow">Plano Estratégico</p>
         {% if macro_objectives %}
             <h1 class="page-title">{{ macro_objectives[0].title }}</h1>
-            <p class="page-cycle">{{ macro_objectives[0].cycle }}</p>
+            <p class="page-cycle">Ciclo {{ macro_objectives[0].cycle }}</p>
         {% else %}
             <h1 class="page-title">Defina o Objetivo Macro</h1>
-            <p class="page-cycle">Ciclo atual</p>
+            <p class="page-cycle">Aguardando configuração</p>
         {% endif %}
       </div>
       <div class="header-actions">
-        <button class="btn btn-macro-action" style="border-color: #1e1e1e; color: #1e1e1e;" onmouseover="this.style.backgroundColor='#EEEDFE'; this.style.color='#7371ff'; this.style.borderColor='#AFA9EC'" onmouseout="this.style.backgroundColor='var(--surface)'; this.style.color='#1e1e1e'; this.style.borderColor='#1e1e1e'" onclick="openModal('modal-dept')">Departamentos</button>
-        <button class="btn btn-primary" onclick="openModal('modal-macro')">Editar estratégia</button>
+        <button class="btn" onclick="openModal('modal-dept')">Departamentos</button>
+        <button class="btn btn-primary" onclick="openModal('modal-macro')">Configurar Estratégia</button>
       </div>
     </div>
 
@@ -245,15 +257,15 @@
           <h2 id="dept-title">{% for d in departments if d.id == selected_dept_id %}{{ d.name }}{% endfor %}</h2>
           <span class="badge badge-purple" id="obj-count">{{ dept_details|length }} objetivos</span>
         </div>
-        <button class="btn-ghost" onclick="toggle('form-novo-obj')">+ Novo objetivo</button>
+        <button class="btn" onclick="toggle('form-novo-obj')">+ Novo Objetivo</button>
       </div>
 
-      <form action="{{ url_for('create_operational') }}" method="POST" class="new-obj-form" id="form-novo-obj">
+      <form action="{{ url_for('create_operational') }}" method="POST" class="new-obj-form" id="form-novo-obj" style="margin-bottom: 24px;">
         <input type="hidden" name="type" value="dept_objective">
         <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-        <input class="form-input" type="text" name="title" placeholder="Qual o próximo grande passo da área?" style="font-size:14px;flex:1;" required>
-        <button type="submit" class="btn btn-primary" style="border-radius:100px;padding:8px 18px;">Criar</button>
-        <button type="button" class="btn-cancel-sm" onclick="toggle('form-novo-obj')">Cancelar</button>
+        <input class="form-input" type="text" name="title" placeholder="Descreva o grande passo estratégico desta área..." style="font-size:14px;flex:1;" required>
+        <button type="submit" class="btn-save-sm">Criar Objetivo</button>
+        <button type="button" class="action-link" onclick="toggle('form-novo-obj')">Cancelar</button>
       </form>
 
       <div class="obj-list" id="obj-list">
@@ -270,46 +282,45 @@
         <div class="obj-card" id="obj-{{ obj.id }}">
           <div class="obj-card-header">
             
-            <div style="flex: 1; padding-right: 1.5rem;">
-              <p class="obj-eyebrow">Objetivo</p>
+            <div style="flex: 1; padding-right: 2rem;">
+              <p class="obj-eyebrow">Objetivo da Área</p>
               
-              <div id="view-obj-{{ obj.id }}" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <div id="view-obj-{{ obj.id }}" style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
                 <p class="obj-title">{{ obj.title }}</p>
                 
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <button class="btn-ghost-muted" style="padding:0; font-size:10px;" onclick="toggleObjEdit('{{ obj.id }}')" title="Editar Nome">✎ Editar</button>
-                    
-                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar este Objetivo e TODOS os seus KRs e Tarefas?');">
+                <div style="display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                    <button class="action-link" onclick="toggleObjEdit('{{ obj.id }}')">Editar</button>
+                    <form action="{{ url_for('delete_operational') }}" method="POST" style="margin:0;" onsubmit="return confirm('ATENÇÃO: Deseja realmente excluir este Objetivo e todas as informações vinculadas a ele?');">
                         <input type="hidden" name="type" value="dept_objective">
                         <input type="hidden" name="item_id" value="{{ obj.id }}">
                         <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                        <button type="submit" class="btn-ghost-muted" style="padding:0; font-size:10px; color: #ff43c0;" title="Excluir Objetivo">🗑️ Apagar</button>
+                        <button type="submit" class="action-link danger">Excluir</button>
                     </form>
                 </div>
               </div>
 
-              <form action="{{ url_for('update_operational') }}" method="POST" id="edit-obj-{{ obj.id }}" style="display: none; align-items: center; gap: 8px; margin-top: 4px;">
+              <form action="{{ url_for('update_operational') }}" method="POST" id="edit-obj-{{ obj.id }}" class="edit-form" style="margin-top: 12px;">
                 <input type="hidden" name="type" value="dept_objective">
                 <input type="hidden" name="item_id" value="{{ obj.id }}">
                 <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                <input class="form-input" type="text" name="title" value="{{ obj.title }}" style="flex:1;" required>
-                <button type="submit" class="btn-save-sm">Salvar</button>
-                <button type="button" class="btn-cancel-sm" onclick="toggleObjEdit('{{ obj.id }}')">×</button>
+                <input class="form-input" type="text" name="title" value="{{ obj.title }}" style="flex:1; font-size:14px;" required>
+                <button type="submit" class="btn-save-sm">Atualizar</button>
+                <button type="button" class="action-link" onclick="toggleObjEdit('{{ obj.id }}')">Cancelar</button>
               </form>
             </div>
 
             <div class="obj-progress-wrap">
               <div class="obj-progress-label">
-                <span>progresso geral</span>
+                <span>Progresso</span>
                 <span>{{ obj_progress }}%</span>
               </div>
               <div class="ring-wrap">
                 {% set dash_offset = 100.5 - (100.5 * obj_progress / 100) %}
-                <svg width="42" height="42" viewBox="0 0 42 42">
-                  <circle cx="21" cy="21" r="16" fill="#f4f3f0" stroke="none"/>
-                  <circle cx="21" cy="21" r="16" fill="none" stroke="#D3D1C7" stroke-width="2.5"/>
-                  <circle cx="21" cy="21" r="16" fill="none" stroke="#7371ff" stroke-width="2.5"
-                    stroke-dasharray="100.5" stroke-dashoffset="{{ dash_offset }}"
+                <svg width="46" height="46" viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="18" fill="var(--surface-2)" stroke="none"/>
+                  <circle cx="21" cy="21" r="18" fill="none" stroke="var(--border)" stroke-width="3"/>
+                  <circle cx="21" cy="21" r="18" fill="none" stroke="var(--accent)" stroke-width="3"
+                    stroke-dasharray="113" stroke-dashoffset="{{ 113 - (113 * obj_progress / 100) }}"
                     stroke-linecap="round" transform="rotate(-90 21 21)"/>
                 </svg>
               </div>
@@ -320,39 +331,12 @@
             <div class="divider"></div>
 
             <div class="kr-section">
-              <p class="kr-section-label">Key results</p>
+              <p class="kr-section-label">Key Results & Tarefas</p>
               <div class="kr-list">
                 
                 {% for kr in obj.key_results %}
                 <div class="kr-item" id="kr-{{ kr.id }}">
                   
-                  <div class="kr-actions" style="display:flex; align-items:center; gap:10px;">
-                    <button class="kr-action-btn edit-color" onclick="toggle('kr-edit-{{ kr.id }}')">✎ Editar KR e Valores</button>
-                    
-                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar este KR e TODAS as suas tarefas?');">
-                        <input type="hidden" name="type" value="kr">
-                        <input type="hidden" name="item_id" value="{{ kr.id }}">
-                        <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                        <button type="submit" class="kr-action-btn" style="color: #ff43c0;">🗑️ Apagar</button>
-                    </form>
-                  </div>
-
-                  <form action="{{ url_for('update_operational') }}" method="POST" class="kr-edit-form" id="kr-edit-{{ kr.id }}">
-                    <input type="hidden" name="type" value="kr">
-                    <input type="hidden" name="item_id" value="{{ kr.id }}">
-                    <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                    <input class="form-input" name="description" type="text" value="{{ kr.description }}" style="flex:1;min-width:160px;" required>
-                    
-                    <span style="font-size:10px; font-weight:600; color:var(--text-tertiary);">Atual:</span>
-                    <input class="form-input" name="current_value" type="number" step="0.01" value="{{ kr.current_value }}" style="width:72px;" required>
-                    
-                    <span style="font-size:10px; font-weight:600; color:var(--text-tertiary);">Meta:</span>
-                    <input class="form-input" name="target_value" type="number" step="0.01" value="{{ kr.target_value }}" style="width:72px;" required>
-                    
-                    <button type="submit" class="btn-save-sm" style="background:#ff43c0;" onmouseover="this.style.backgroundColor='#d1379e'" onmouseout="this.style.backgroundColor='#ff43c0'">Salvar</button>
-                    <button type="button" class="btn-cancel-sm" onclick="toggle('kr-edit-{{ kr.id }}')">×</button>
-                  </form>
-
                   <div class="kr-item-header">
                     <p class="kr-title">{{ kr.description }}</p>
                     <div class="kr-numbers">
@@ -366,6 +350,32 @@
                     <div class="progress-fill" style="width:{{ kr_pct }}%"></div>
                   </div>
 
+                  <div class="kr-actions" style="margin-bottom: 16px;">
+                    <button class="action-link" onclick="toggle('kr-edit-{{ kr.id }}')">Atualizar Valores</button>
+                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:inline; margin:0;" onsubmit="return confirm('ATENÇÃO: Deseja realmente excluir este Key Result e as suas tarefas?');">
+                        <input type="hidden" name="type" value="kr">
+                        <input type="hidden" name="item_id" value="{{ kr.id }}">
+                        <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                        <button type="submit" class="action-link danger">Excluir KR</button>
+                    </form>
+                  </div>
+
+                  <form action="{{ url_for('update_operational') }}" method="POST" class="edit-form" id="kr-edit-{{ kr.id }}" style="margin-bottom: 16px; background: var(--surface);">
+                    <input type="hidden" name="type" value="kr">
+                    <input type="hidden" name="item_id" value="{{ kr.id }}">
+                    <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                    <input class="form-input" name="description" type="text" value="{{ kr.description }}" style="flex:1;min-width:160px;" required>
+                    
+                    <span style="font-size:11px; font-weight:600; color:var(--text-secondary);">Atual:</span>
+                    <input class="form-input" name="current_value" type="number" step="0.01" value="{{ kr.current_value }}" style="width:80px;" required>
+                    
+                    <span style="font-size:11px; font-weight:600; color:var(--text-secondary);">Meta:</span>
+                    <input class="form-input" name="target_value" type="number" step="0.01" value="{{ kr.target_value }}" style="width:80px;" required>
+                    
+                    <button type="submit" class="btn-save-sm">Salvar</button>
+                    <button type="button" class="action-link" onclick="toggle('kr-edit-{{ kr.id }}')">Cancelar</button>
+                  </form>
+
                   <div class="task-list">
                     {% for task in kr.tasks %}
                     
@@ -378,18 +388,18 @@
                       <span class="status-tag {{ tag_class }}">{{ task.status }}</span>
                       <span class="task-desc">{{ task.description }}</span>
                       <span class="task-meta">{{ task.owner_name }}</span>
-                      <span class="task-meta">{% if task.deadline %}{{ task.deadline }}{% else %}Sem data{% endif %}</span>
+                      <span class="task-meta" style="width: 70px;">{% if task.deadline %}{{ task.deadline }}{% else %}-{% endif %}</span>
                       {% if task.deliverable_link %}
-                          <a href="{{ task.deliverable_link }}" target="_blank" class="task-link">LINK</a>
+                          <a href="{{ task.deliverable_link }}" target="_blank" class="action-link" style="color:var(--accent); padding:0;">LINK</a>
                       {% endif %}
                       
-                      <button class="task-edit-btn" onclick="toggleTask('{{ task.id }}')">Editar</button>
+                      <button class="action-link" onclick="toggleTask('{{ task.id }}')" style="padding:0;">Editar</button>
                       
-                      <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar esta tarefa?');">
+                      <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0;" onsubmit="return confirm('Excluir esta tarefa definitivamente?');">
                           <input type="hidden" name="type" value="task">
                           <input type="hidden" name="item_id" value="{{ task.id }}">
                           <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                          <button type="submit" class="task-edit-btn" style="color: #ff43c0; margin-left: 4px;">Apagar</button>
+                          <button type="submit" class="action-link danger" style="padding:0;">Excluir</button>
                       </form>
                     </div>
 
@@ -405,50 +415,54 @@
                         <option value="Finalizado" {% if task.status == 'Finalizado' %}selected{% endif %}>Finalizado</option>
                       </select>
                       <input class="form-input" name="description" type="text" value="{{ task.description }}" style="flex:1;min-width:120px;" required>
-                      <input class="form-input" name="owner_name" type="text" value="{{ task.owner_name }}" style="width:80px;">
+                      <input class="form-input" name="owner_name" type="text" value="{{ task.owner_name }}" style="width:90px;" placeholder="Responsável">
                       <input class="form-input" name="deadline" type="date" value="{{ task.deadline if task.deadline else '' }}" style="width:110px;">
-                      <input class="form-input" name="deliverable_link" type="url" value="{{ task.deliverable_link or '' }}" placeholder="Link" style="width:80px;">
-                      <button type="submit" class="btn-save-sm">OK</button>
-                      <button type="button" class="btn-cancel-sm" onclick="toggleTask('{{ task.id }}')">×</button>
+                      <input class="form-input" name="deliverable_link" type="url" value="{{ task.deliverable_link or '' }}" placeholder="Link" style="width:90px;">
+                      <button type="submit" class="btn-save-sm">Aplicar</button>
+                      <button type="button" class="action-link" onclick="toggleTask('{{ task.id }}')">Cancelar</button>
                     </form>
                     {% endfor %}
                   </div>
 
-                  <button class="btn-ghost-muted" style="margin-top:8px;" onclick="toggle('add-task-{{ kr.id }}')">+ Adicionar tarefa</button>
+                  <div style="margin-top: 12px;">
+                      <button class="action-link" onclick="toggle('add-task-{{ kr.id }}')">+ Nova Tarefa</button>
+                  </div>
                   <form id="add-task-{{ kr.id }}" action="{{ url_for('create_operational') }}" method="POST" class="add-task-form">
                     <input type="hidden" name="type" value="task">
                     <input type="hidden" name="parent_id" value="{{ kr.id }}">
                     <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
                     <input class="form-input" name="description" type="text" placeholder="O que precisa ser feito?" style="flex:1;min-width:160px;" required>
-                    <input class="form-input" name="owner_name" type="text" placeholder="Quem?" style="width:90px;">
+                    <input class="form-input" name="owner_name" type="text" placeholder="Responsável" style="width:100px;">
                     <input class="form-input" name="deadline" type="date" style="width:120px;">
-                    <input class="form-input" name="deliverable_link" type="url" placeholder="Link (opcional)" style="width:80px;">
-                    <button type="submit" class="btn-save-sm">Salvar</button>
-                    <button type="button" class="btn-cancel-sm" onclick="toggle('add-task-{{ kr.id }}')">×</button>
+                    <input class="form-input" name="deliverable_link" type="url" placeholder="Link" style="width:90px;">
+                    <button type="submit" class="btn-save-sm">Adicionar</button>
+                    <button type="button" class="action-link" onclick="toggle('add-task-{{ kr.id }}')">Cancelar</button>
                   </form>
 
                 </div>
                 {% endfor %}
               </div>
 
-              <form id="new-kr-{{ obj.id }}" action="{{ url_for('create_operational') }}" method="POST" class="new-kr-form">
-                <p style="font-size:11px;font-weight:600;color:var(--text-tertiary);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px;">Novo Key Result</p>
+              <form id="new-kr-{{ obj.id }}" action="{{ url_for('create_operational') }}" method="POST" class="new-kr-form" style="margin-top: 16px;">
+                <p style="font-size:11px;font-weight:700;color:var(--text-tertiary);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px;">Novo Indicador (KR)</p>
                 <div class="new-kr-row">
                   <input type="hidden" name="type" value="kr">
                   <input type="hidden" name="parent_id" value="{{ obj.id }}">
                   <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                  <input class="form-input" name="description" type="text" placeholder="Descrição do KR (ex: Aumentar Leads em 20%)" style="flex:1;min-width:160px;" required>
-                  <input class="form-input" name="target_value" type="number" step="0.01" placeholder="Meta" style="width:80px;" required>
-                  <button type="submit" class="btn-save-sm">Salvar KR</button>
-                  <button type="button" class="btn-cancel-sm" onclick="toggle('new-kr-{{ obj.id }}')">Cancelar</button>
+                  <input class="form-input" name="description" type="text" placeholder="Descrição do indicador (Ex: Aumentar conversão em 20%)" style="flex:1;min-width:160px;" required>
+                  <input class="form-input" name="target_value" type="number" step="0.01" placeholder="Meta Alvo" style="width:100px;" required>
+                  <button type="submit" class="btn-save-sm">Criar KR</button>
+                  <button type="button" class="action-link" onclick="toggle('new-kr-{{ obj.id }}')">Cancelar</button>
                 </div>
               </form>
-              <button class="btn-dashed" style="margin-top:10px;" onclick="toggle('new-kr-{{ obj.id }}')">+ Novo KR</button>
+              <div style="margin-top: 16px;">
+                <button class="action-link" style="padding: 8px 12px; background: var(--surface-2); border: 1px dashed var(--border-strong);" onclick="toggle('new-kr-{{ obj.id }}')">+ ADICIONAR KEY RESULT</button>
+              </div>
             </div>
           </div>
           <div class="obj-card-footer">
-            <span class="obj-footer-meta">{{ obj.key_results|length }} Key Results</span>
-            <button class="btn-ghost" id="toggle-btn-{{ obj.id }}" onclick="toggleObjective('{{ obj.id }}')">Expandir ▼</button>
+            <span class="obj-footer-meta">{{ obj.key_results|length }} Key Results Associados</span>
+            <button class="btn" id="toggle-btn-{{ obj.id }}" onclick="toggleObjective('{{ obj.id }}')" style="font-size: 10px; padding: 6px 14px;">VER DETALHES ↓</button>
           </div>
 
         </div>
@@ -463,22 +477,22 @@
 <div class="modal-overlay" id="modal-macro">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">Estratégia macro</h3>
-      <button class="modal-close" onclick="closeModal('modal-macro')">×</button>
+      <h3 class="modal-title">Estratégia Macro</h3>
+      <button class="modal-close" onclick="closeModal('modal-macro')">&times;</button>
     </div>
     <form action="{{ url_for('save_macro') }}" method="POST">
       {% if macro_objectives %}
           <input type="hidden" name="macro_id" value="{{ macro_objectives[0].id }}">
       {% endif %}
       <div class="modal-field">
-        <label class="modal-label">Título do objetivo</label>
-        <input class="modal-input" name="title" type="text" value="{{ macro_objectives[0].title if macro_objectives else '' }}" placeholder="Título do objetivo" required>
+        <label class="modal-label">Título Direcional</label>
+        <input class="modal-input" name="title" type="text" value="{{ macro_objectives[0].title if macro_objectives else '' }}" placeholder="Ex: Dobrar a receita recorrente" required>
       </div>
       <div class="modal-field">
-        <label class="modal-label">Ciclo</label>
-        <input class="modal-input" name="cycle" type="text" value="{{ macro_objectives[0].cycle if macro_objectives else '' }}" placeholder="ex: 2026">
+        <label class="modal-label">Período / Ciclo</label>
+        <input class="modal-input" name="cycle" type="text" value="{{ macro_objectives[0].cycle if macro_objectives else '' }}" placeholder="Ex: 2026 - Q1">
       </div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;border-radius:100px;font-size:12px;">Salvar alterações</button>
+      <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; font-size:13px;">Salvar Definições</button>
     </form>
   </div>
 </div>
@@ -486,23 +500,24 @@
 <div class="modal-overlay" id="modal-dept">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">Departamentos</h3>
-      <button class="modal-close" onclick="closeModal('modal-dept')">×</button>
+      <h3 class="modal-title">Gestão de Departamentos</h3>
+      <button class="modal-close" onclick="closeModal('modal-dept')">&times;</button>
     </div>
     
-    <div id="dept-list-modal" style="margin-bottom:1.5rem;display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto;padding-right:4px;">
+    <div id="dept-list-modal" style="margin-bottom:2rem; display:flex; flex-direction:column; gap:10px; max-height:220px; overflow-y:auto; padding-right:8px;">
       {% for dept in departments %}
-      <form action="{{ url_for('save_department') }}" method="POST" class="dept-item-row">
+      <form action="{{ url_for('save_department') }}" method="POST" style="display: flex; gap: 8px;">
         <input type="hidden" name="dept_id" value="{{ dept.id }}">
-        <input class="form-input" name="name" type="text" value="{{ dept.name }}" style="flex:1;font-size:13px;padding:10px 12px;border-radius:10px;">
-        <button type="submit" class="btn-save-sm" style="border-radius:10px;">OK</button>
+        <input class="form-input" name="name" type="text" value="{{ dept.name }}" style="flex:1; padding: 10px 12px; font-size: 13px;">
+        <button type="submit" class="btn-save-sm">Salvar</button>
       </form>
       {% endfor %}
     </div>
 
-    <form action="{{ url_for('save_department') }}" method="POST" style="padding-top:1.25rem;border-top:0.5px solid var(--border);display:flex;flex-direction:column;gap:10px;">
-      <input class="form-input" name="name" type="text" placeholder="Nova área (ex: Marketing)..." style="font-size:13px;padding:12px;border-radius:12px;" required>
-      <button type="submit" class="btn btn-primary" style="justify-content:center;border-radius:100px;font-size:12px;">+ Criar departamento</button>
+    <form action="{{ url_for('save_department') }}" method="POST" style="padding-top:1.5rem; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:12px;">
+      <label class="modal-label">Adicionar Nova Área</label>
+      <input class="modal-input" name="name" type="text" placeholder="Ex: Vendas Inbound" required>
+      <button type="submit" class="btn" style="justify-content:center; padding:12px;">+ Criar Departamento</button>
     </form>
   </div>
 </div>
@@ -541,17 +556,16 @@
     }
   }
 
-  // NOVO: Função para o Expandir/Recolher dos Objetivos
   function toggleObjective(objId) {
     const content = document.getElementById('collapsible-' + objId);
     const btn = document.getElementById('toggle-btn-' + objId);
     if(content && btn) {
         if(content.style.display === 'none') {
             content.style.display = 'block';
-            btn.innerHTML = 'Recolher ▲';
+            btn.innerHTML = 'OCULTAR DETALHES ↑';
         } else {
             content.style.display = 'none';
-            btn.innerHTML = 'Expandir ▼';
+            btn.innerHTML = 'VER DETALHES ↓';
         }
     }
   }
