@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKR Studio — Conexão.CX</title>
+
+<style>
+  /* Todo o seu CSS original foi mantido intacto aqui */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  :root {
+    --bg: #f9f8f6; --surface: #ffffff; --surface-2: #f4f3f0;
+    --border: rgba(0,0,0,0.08); --border-strong: rgba(0,0,0,0.14);
+    
+    /* Paleta de Cores Conexão.CX */
+    --text-primary: #1e1e1e; /* Quase Preto Conexão */
+    --text-secondary: #6b6b66; --text-tertiary: #a8a8a2;
+    
+    --accent: #7371ff; /* Roxo Conexão */
+    --accent-bg: #EEEDFE; /* Roxo Claro Suave */
+    --accent-light: #AFA9EC; /* Roxo Médio */
+    
+    --green: #bef533; /* Verde Limão Conexão */
+    --green-bg: #E1F5EE; /* Verde Claro Suave (Mantido para tags) */
+    --green-text: #0F6E56; /* Verde Escuro (Mantido para tags) */
+    
+    --amber-bg: #FAEEDA; --amber-text: #854F0B;
+    --gray-bg: #F1EFE8; --gray-text: #5F5E5A;
+    
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px;
+  }
+  
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+  
+  body { 
+    /* AJUSTE FONTE: Forçando Helvetica em todo o sistema */
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; 
+    background: var(--bg); color: var(--text-primary); min-height: 100vh; 
+  }
+  
+  .layout { display: flex; min-height: 100vh; }
+  
+  /* Sidebar */
+  .sidebar { width: 220px; flex-shrink: 0; background: var(--surface); border-right: 0.5px solid var(--border); padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 2rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  
+  /* AJUSTE LOGO: Removendo vetor e alinhando texto à esquerda */
+  .sidebar-logo { display: flex; align-items: center; gap: 0; }
+  .logo-text { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
+  
+  .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+  .nav-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); padding: 0 8px; margin-bottom: 6px; margin-top: 8px; }
+  
+  /* AJUSTE FONTE: Removendo Mono das nav-dots */
+  .nav-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--radius-sm); font-size: 13px; color: var(--text-secondary); cursor: pointer; transition: background 0.15s, color 0.15s; text-decoration: none; font-family: inherit;}
+  .nav-item:hover { background: var(--surface-2); color: var(--text-primary); }
+  .nav-item.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.4; flex-shrink: 0; }
+  .nav-item.active .nav-dot { opacity: 1; }
+  .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 0.5px solid var(--border); }
+  .user-pill { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--radius-sm); }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-bg); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
+  .user-name { font-size: 12px; font-weight: 500; color: var(--text-primary); }
+  .user-role { font-size: 11px; color: var(--text-tertiary); }
+  
+  /* Main & Header */
+  .main { flex: 1; padding: 2.5rem 3rem; max-width: 1000px; overflow-x: hidden; }
+  .page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; padding-bottom: 2rem; margin-bottom: 2rem; border-bottom: 0.5px solid var(--border); }
+  .page-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .page-title { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); line-height: 1.2; }
+  .page-cycle { font-size: 13px; color: var(--text-tertiary); margin-top: 4px; }
+  .header-actions { display: flex; gap: 8px; flex-shrink: 0; padding-top: 4px; }
+  
+  /* Buttons */
+  /* AJUSTE FONTE: Forçando Helvetica nos botões */
+  .btn { display: inline-flex; align-items: center; gap: 6px; font-family: inherit; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; padding: 7px 16px; border-radius: 100px; border: 0.5px solid var(--border-strong); background: var(--surface); color: var(--text-secondary); cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s; white-space: nowrap; text-decoration: none;}
+  .btn:hover { background: var(--surface-2); color: var(--text-primary); }
+  
+  /* AJUSTE COR BOTÃO: Roxo Conexão */
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #5b59cc; border-color: #5b59cc; color: #fff; }
+  
+  .btn-ghost { background: none; border: none; color: var(--accent); padding: 4px 0; font-size: 11px; font-weight: 600; cursor: pointer; font-family: inherit; letter-spacing: 0.02em; }
+  .btn-ghost:hover { text-decoration: underline; }
+  .btn-ghost-muted { background: none; border: none; color: var(--text-tertiary); padding: 4px 0; font-size: 11px; font-weight: 400; cursor: pointer; font-family: inherit; }
+  .btn-ghost-muted:hover { color: var(--accent); }
+  .btn-dashed { background: none; border: 0.5px dashed var(--border-strong); color: var(--text-tertiary); width: 100%; justify-content: center; border-radius: var(--radius-sm); padding: 9px; font-size: 11px; font-weight: 400; cursor: pointer; font-family: inherit; transition: border-color 0.15s, color 0.15s; }
+  .btn-dashed:hover { border-color: var(--accent); color: var(--accent); }
+  
+  /* Dept pills */
+  .dept-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .dept-pill { padding: 6px 18px; border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.15s, color 0.15s; border: 0.5px solid transparent; background: var(--surface); color: var(--text-secondary); border-color: var(--border); text-decoration: none;}
+  .dept-pill:hover { background: var(--surface-2); color: var(--text-primary); }
+  
+  /* AJUSTE COR PILL ATIVA: Roxo Conexão */
+  .dept-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  
+  /* Section header & Badge */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .section-title { display: flex; align-items: center; gap: 10px; }
+  .section-title h2 { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 100px; }
+  .badge-purple { background: var(--accent-bg); color: var(--accent); }
+  
+  /* Status tags */
+  .status-tag { display: inline-flex; align-items: center; justify-content: center; width: 90px; gap: 4px; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+  .status-done { background: var(--green-bg); color: var(--green-text); }
+  .status-doing { background: var(--accent-bg); color: var(--accent); }
+  .status-todo { background: var(--gray-bg); color: var(--gray-text); }
+  .status-paused { background: var(--amber-bg); color: var(--amber-text); }
+  
+  /* Obj Card & Layout */
+  .obj-list { display: flex; flex-direction: column; gap: 1.25rem; }
+  .obj-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color 0.2s; }
+  .obj-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.5rem; }
+  .obj-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 5px; }
+  .obj-title { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+  .obj-progress-wrap { display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding-top: 2px; }
+  .obj-progress-label { text-align: right; }
+  .obj-progress-label span:first-child { display: block; font-size: 10px; color: var(--text-tertiary); margin-bottom: 2px; }
+  
+  /* AJUSTE FONTE: Removendo Mono do progresso geral */
+  .obj-progress-label span:last-child { font-size: 18px; font-weight: 600; color: var(--text-primary); font-family: inherit; }
+  .ring-wrap { width: 42px; height: 42px; flex-shrink: 0; }
+  .ring-wrap svg { display: block; }
+  .divider { height: 0.5px; background: var(--border); }
+  
+  /* KR Section */
+  .kr-section { padding: 1.25rem 1.5rem; }
+  .kr-section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 10px; }
+  .kr-list { display: flex; flex-direction: column; gap: 10px; }
+  .kr-item { background: var(--surface-2); border-radius: var(--radius-md); padding: 1rem 1.25rem; }
+  .kr-item-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .kr-title { font-size: 13px; font-weight: 600; color: var(--text-primary); flex: 1; line-height: 1.4; }
+  .kr-numbers { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  
+  /* AJUSTE FONTE: Removendo Mono dos números do KR */
+  .kr-current { font-size: 12px; color: var(--text-tertiary); font-family: inherit; }
+  .kr-pct { font-size: 13px; font-weight: 600; color: var(--text-primary); font-family: inherit; min-width: 36px; text-align: right; }
+  
+  /* Progress Bar */
+  .progress-bar { height: 3px; background: rgba(0,0,0,0.07); border-radius: 100px; overflow: hidden; margin-bottom: 12px; }
+  
+  /* AJUSTE COR BARRA PROGRESSO: Verde Limão Conexão */
+  .progress-fill { height: 100%; background: var(--green); border-radius: 100px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+  
+  /* Tasks */
+  .task-list { display: flex; flex-direction: column; }
+  .task-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-top: 0.5px solid var(--border); position: relative; }
+  .task-desc { font-size: 12px; color: var(--text-secondary); flex: 1; line-height: 1.4; }
+  
+  /* AJUSTE FONTE: Removendo Mono das metas da tarefa */
+  .task-meta { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; flex-shrink: 0; font-family: inherit; width: 80px;}
+  
+  .task-link { font-size: 10px; font-weight: 600; color: var(--accent); text-decoration: none; flex-shrink: 0; }
+  .task-link:hover { text-decoration: underline; }
+  .task-edit-btn { font-size: 10px; font-weight: 600; color: transparent; background: none; border: none; cursor: pointer; font-family: inherit; transition: color 0.15s; flex-shrink: 0; padding: 0; }
+  .task-row:hover .task-edit-btn { color: #ff43c0; }
+  
+  /* Forms */
+  /* AJUSTE FONTE: Helvetica nos formulários */
+  .edit-form { display: none; align-items: center; gap: 6px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px; margin: 4px 0; }
+  .edit-form.visible { display: flex; flex-wrap: wrap; }
+  .form-input { font-family: inherit; font-size: 11px; padding: 5px 8px; border: 0.5px solid var(--border-strong); border-radius: 6px; background: var(--surface); color: var(--text-primary); outline: none; transition: border-color 0.15s; }
+  .form-input:focus { border-color: var(--accent); }
+  .form-select { font-family: inherit; font-size: 11px; padding: 5px 8px; border: 0.5px solid var(--border-strong); border-radius: 6px; background: var(--surface); color: var(--text-primary); outline: none; cursor: pointer; }
+  
+  /* AJUSTE COR SALVAR FORM: Roxo Conexão */
+  .btn-save-sm { background: var(--accent); color: #fff; border: none; border-radius: 6px; font-family: inherit; font-size: 10px; font-weight: 600; padding: 5px 12px; cursor: pointer; white-space: nowrap; }
+  .btn-save-sm:hover { background: #5b59cc; }
+  
+  .btn-cancel-sm { background: none; border: none; color: var(--text-tertiary); font-family: inherit; font-size: 10px; cursor: pointer; }
+  .add-task-form { display: none; margin-top: 6px; }
+  .add-task-form.visible { display: flex; flex-wrap: wrap; gap: 6px; }
+  .add-task-form .form-input:first-child { flex: 1; min-width: 160px; }
+  
+  /* KR Actions */
+  .checkin-form { display: none; align-items: center; gap: 8px; background: var(--accent-bg); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 10px; }
+  .checkin-form.visible { display: flex; }
+  .checkin-label { font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; white-space: nowrap; }
+  .kr-edit-form { display: none; align-items: center; gap: 6px; background: #FEF0F9; border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 10px; }
+  .kr-edit-form.visible { display: flex; flex-wrap: wrap; }
+  .kr-actions { display: flex; gap: 10px; margin-bottom: 8px; }
+  .kr-action-btn { font-size: 10px; font-weight: 600; background: none; border: none; cursor: pointer; font-family: inherit; color: var(--text-tertiary); padding: 0; transition: color 0.15s; }
+  .kr-action-btn:hover { color: var(--accent); }
+  .kr-action-btn.edit-color:hover { color: #ff43c0; }
+  
+  /* New Forms */
+  .new-kr-form { display: none; flex-direction: column; gap: 8px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; }
+  .new-kr-form.visible { display: flex; }
+  .new-kr-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .new-obj-form { display: none; align-items: center; gap: 10px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+  .new-obj-form.visible { display: flex; }
+  .new-obj-form .form-input { font-size: 14px; flex: 1; }
+  
+  /* Modals */
+  /* AJUSTE FONTE: Helvetica nos Modais */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.25); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 100; align-items: center; justify-content: center; padding: 2rem; }
+  .modal-overlay.visible { display: flex; }
+  .modal { background: var(--surface); border-radius: var(--radius-xl); padding: 2.5rem; width: 100%; max-width: 480px; box-shadow: 0 24px 80px rgba(0,0,0,0.12); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+  .modal-title { font-size: 18px; font-weight: 600; color: var(--text-primary); }
+  .modal-close { background: none; border: none; font-size: 18px; color: var(--text-tertiary); cursor: pointer; line-height: 1; font-family: inherit; padding: 0; }
+  .modal-close:hover { color: var(--text-primary); }
+  .modal-field { margin-bottom: 1.25rem; }
+  .modal-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-tertiary); margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .modal-input { width: 100%; font-family: inherit; font-size: 15px; padding: 12px 0; border: none; border-bottom: 0.5px solid var(--border-strong); background: transparent; color: var(--text-primary); outline: none; transition: border-color 0.15s; }
+  .modal-input:focus { border-bottom-color: var(--accent); }
+  .dept-item-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  
+  /* Animations */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-in { animation: fadeIn 0.4s ease both; }
+  .obj-card { animation: fadeIn 0.35s ease both; }
+  
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-text">
+        <span style="color: #1e1e1e;">{{ session.client_name }}</span>
+      </span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-label">Visão geral</p>
+      <a class="nav-item active" href="/"><span class="nav-dot"></span>Estratégia</a>
+      
+      <p class="nav-label">Operacional</p>
+      {% for dept in departments %}
+        <a class="nav-item" href="{{ url_for('index', dept_id=dept.id) }}">
+          <span class="nav-dot"></span>{{ dept.name }}
+        </a>
+      {% endfor %}
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-pill" style="justify-content: space-between;">
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <div class="avatar">{{ session.user_name[:2] | upper }}</div>
+            <div>
+              <p class="user-name">{{ session.user_name }}</p>
+              <p class="user-role">Logado</p>
+            </div>
+        </div>
+        <a href="{{ url_for('logout') }}" style="font-size: 10px; color: #ff43c0; text-decoration: none; font-weight: bold;">SAIR</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div>
+        <p class="page-eyebrow">Estratégia anual</p>
+        {% if macro_objectives %}
+            <h1 class="page-title">{{ macro_objectives[0].title }}</h1>
+            <p class="page-cycle">{{ macro_objectives[0].cycle }}</p>
+        {% else %}
+            <h1 class="page-title">Defina o Objetivo Macro</h1>
+            <p class="page-cycle">Ciclo atual</p>
+        {% endif %}
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-macro-action" style="border-color: #1e1e1e; color: #1e1e1e;" onmouseover="this.style.backgroundColor='#EEEDFE'; this.style.color='#7371ff'; this.style.borderColor='#AFA9EC'" onmouseout="this.style.backgroundColor='var(--surface)'; this.style.color='#1e1e1e'; this.style.borderColor='#1e1e1e'" onclick="openModal('modal-dept')">Departamentos</button>
+        <button class="btn btn-primary" onclick="openModal('modal-macro')">Editar estratégia</button>
+      </div>
+    </div>
+
+    <div class="dept-pills" id="dept-pills">
+      {% for dept in departments %}
+        <a href="{{ url_for('index', dept_id=dept.id) }}" class="dept-pill {% if selected_dept_id == dept.id %}active{% endif %}">
+          {{ dept.name }}
+        </a>
+      {% endfor %}
+    </div>
+
+    {% if selected_dept_id %}
+    <div id="dept-content" class="animate-in">
+
+      <div class="section-header">
+        <div class="section-title">
+          <h2 id="dept-title">{% for d in departments if d.id == selected_dept_id %}{{ d.name }}{% endfor %}</h2>
+          <span class="badge badge-purple" id="obj-count">{{ dept_details|length }} objetivos</span>
+        </div>
+        <button class="btn-ghost" onclick="toggle('form-novo-obj')">+ Novo objetivo</button>
+      </div>
+
+      <form action="{{ url_for('create_operational') }}" method="POST" class="new-obj-form" id="form-novo-obj">
+        <input type="hidden" name="type" value="dept_objective">
+        <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+        <input class="form-input" type="text" name="title" placeholder="Qual o próximo grande passo da área?" style="font-size:14px;flex:1;" required>
+        <button type="submit" class="btn btn-primary" style="border-radius:100px;padding:8px 18px;">Criar</button>
+        <button type="button" class="btn-cancel-sm" onclick="toggle('form-novo-obj')">Cancelar</button>
+      </form>
+
+      <div class="obj-list" id="obj-list">
+        {% for obj in dept_details %}
+        
+        {% set total_kr = obj.key_results|length %}
+        {% set total_pct = namespace(value=0) %}
+        {% for kr in obj.key_results %}
+            {% set pct = ((kr.current_value / kr.target_value) * 100) if kr.target_value > 0 else 0 %}
+            {% set total_pct.value = total_pct.value + pct %}
+        {% endfor %}
+        {% set obj_progress = (total_pct.value / total_kr)|round|int if total_kr > 0 else 0 %}
+        
+        <div class="obj-card" id="obj-{{ obj.id }}">
+          <div class="obj-card-header">
+            <div>
+              <p class="obj-eyebrow">Objetivo</p>
+              <p class="obj-title">{{ obj.title }}</p>
+            </div>
+            <div class="obj-progress-wrap">
+              <div class="obj-progress-label">
+                <span>progresso geral</span>
+                <span>{{ obj_progress }}%</span>
+              </div>
+              <div class="ring-wrap">
+                {% set dash_offset = 100.5 - (100.5 * obj_progress / 100) %}
+                <svg width="42" height="42" viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="16" fill="#f4f3f0" stroke="none"/>
+                  <circle cx="21" cy="21" r="16" fill="none" stroke="#D3D1C7" stroke-width="2.5"/>
+                  <circle cx="21" cy="21" r="16" fill="none" stroke="#7371ff" stroke-width="2.5"
+                    stroke-dasharray="100.5" stroke-dashoffset="{{ dash_offset }}"
+                    stroke-linecap="round" transform="rotate(-90 21 21)"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="kr-section">
+            <p class="kr-section-label">Key results</p>
+            <div class="kr-list">
+              
+              {% for kr in obj.key_results %}
+              <div class="kr-item" id="kr-{{ kr.id }}">
+                
+                <div class="kr-actions">
+                  <button class="kr-action-btn edit-color" onclick="toggle('kr-edit-{{ kr.id }}')">Editar KR</button>
+                  <button class="kr-action-btn" onclick="toggle('kr-checkin-{{ kr.id }}')">Atualizar valor</button>
+                </div>
+
+                <form action="{{ url_for('update_operational') }}" method="POST" class="kr-edit-form" id="kr-edit-{{ kr.id }}">
+                  <input type="hidden" name="type" value="kr">
+                  <input type="hidden" name="item_id" value="{{ kr.id }}">
+                  <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                  <input class="form-input" name="description" type="text" value="{{ kr.description }}" style="flex:1;min-width:160px;">
+                  <input class="form-input" name="target_value" type="number" step="0.01" value="{{ kr.target_value }}" style="width:72px;" placeholder="Meta">
+                  <button type="submit" class="btn-save-sm" style="background:#ff43c0;" onmouseover="this.style.backgroundColor='#d1379e'" onmouseout="this.style.backgroundColor='#ff43c0'">Salvar</button>
+                  <button type="button" class="btn-cancel-sm" onclick="toggle('kr-edit-{{ kr.id }}')">×</button>
+                </form>
+
+                <form action="{{ url_for('update_operational') }}" method="POST" class="checkin-form" id="kr-checkin-{{ kr.id }}">
+                  <input type="hidden" name="type" value="kr_checkin">
+                  <input type="hidden" name="item_id" value="{{ kr.id }}">
+                  <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                  <span class="checkin-label">VALOR ATUAL:</span>
+                  <input class="form-input" name="current_value" type="number" step="0.01" value="{{ kr.current_value }}" style="width:80px;">
+                  <button type="submit" class="btn-save-sm">Atualizar progresso</button>
+                  <button type="button" class="btn-cancel-sm" onclick="toggle('kr-checkin-{{ kr.id }}')">×</button>
+                </form>
+
+                <div class="kr-item-header">
+                  <p class="kr-title">{{ kr.description }}</p>
+                  <div class="kr-numbers">
+                    <span class="kr-current">{{ kr.current_value }} / {{ kr.target_value }}</span>
+                    {% set kr_pct = ((kr.current_value / kr.target_value) * 100)|round|int if kr.target_value > 0 else 0 %}
+                    <span class="kr-pct">{{ kr_pct }}%</span>
+                  </div>
+                </div>
+                
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width:{{ kr_pct }}%"></div>
+                </div>
+
+                <div class="task-list">
+                  {% for task in kr.tasks %}
+                  
+                  {% set tag_class = 'status-todo' %}
+                  {% if task.status == 'Finalizado' %}{% set tag_class = 'status-done' %}
+                  {% elif task.status == 'Em andamento' %}{% set tag_class = 'status-doing' %}
+                  {% elif task.status == 'Pausado' %}{% set tag_class = 'status-paused' %}{% endif %}
+
+                  <div class="task-row" id="view-{{ task.id }}">
+                    <span class="status-tag {{ tag_class }}">{{ task.status }}</span>
+                    <span class="task-desc">{{ task.description }}</span>
+                    <span class="task-meta">{{ task.owner_name }}</span>
+                    <span class="task-meta">{{ task.deadline }}</span>
+                    {% if task.deliverable_link %}
+                        <a href="{{ task.deliverable_link }}" target="_blank" class="task-link">LINK</a>
+                    {% endif %}
+                    <button class="task-edit-btn" onclick="toggleTask('{{ task.id }}')">Editar</button>
+                  </div>
+
+                  <form id="edit-{{ task.id }}" action="{{ url_for('update_operational') }}" method="POST" class="edit-form">
+                    <input type="hidden" name="type" value="task">
+                    <input type="hidden" name="item_id" value="{{ task.id }}">
+                    <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                    
+                    <select name="status" class="form-select">
+                      <option value="Não iniciado" {% if task.status == 'Não iniciado' %}selected{% endif %}>Não iniciado</option>
+                      <option value="Em andamento" {% if task.status == 'Em andamento' %}selected{% endif %}>Em andamento</option>
+                      <option value="Pausado" {% if task.status == 'Pausado' %}selected{% endif %}>Pausado</option>
+                      <option value="Finalizado" {% if task.status == 'Finalizado' %}selected{% endif %}>Finalizado</option>
+                    </select>
+                    <input class="form-input" name="description" type="text" value="{{ task.description }}" style="flex:1;min-width:120px;" required>
+                    <input class="form-input" name="owner_name" type="text" value="{{ task.owner_name }}" style="width:80px;">
+                    <input class="form-input" name="deadline" type="date" value="{{ task.deadline }}" style="width:110px;">
+                    <input class="form-input" name="deliverable_link" type="url" value="{{ task.deliverable_link or '' }}" placeholder="Link" style="width:80px;">
+                    <button type="submit" class="btn-save-sm">OK</button>
+                    <button type="button" class="btn-cancel-sm" onclick="toggleTask('{{ task.id }}')">×</button>
+                  </form>
+                  {% endfor %}
+                </div>
+
+                <button class="btn-ghost-muted" style="margin-top:8px;" onclick="toggle('add-task-{{ kr.id }}')">+ Adicionar tarefa</button>
+                <form id="add-task-{{ kr.id }}" action="{{ url_for('create_operational') }}" method="POST" class="add-task-form">
+                  <input type="hidden" name="type" value="task">
+                  <input type="hidden" name="parent_id" value="{{ kr.id }}">
+                  <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                  <input class="form-input" name="description" type="text" placeholder="O que precisa ser feito?" style="flex:1;min-width:160px;" required>
+                  <input class="form-input" name="owner_name" type="text" placeholder="Quem?" style="width:90px;">
+                  <input class="form-input" name="deadline" type="date" style="width:120px;">
+                  <input class="form-input" name="deliverable_link" type="url" placeholder="Link (opcional)" style="width:80px;">
+                  <button type="submit" class="btn-save-sm">Salvar</button>
+                  <button type="button" class="btn-cancel-sm" onclick="toggle('add-task-{{ kr.id }}')">×</button>
+                </form>
+
+              </div>
+              {% endfor %}
+            </div>
+
+            <form id="new-kr-{{ obj.id }}" action="{{ url_for('create_operational') }}" method="POST" class="new-kr-form">
+              <p style="font-size:11px;font-weight:600;color:var(--text-tertiary);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px;">Novo Key Result</p>
+              <div class="new-kr-row">
+                <input type="hidden" name="type" value="kr">
+                <input type="hidden" name="parent_id" value="{{ obj.id }}">
+                <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                <input class="form-input" name="description" type="text" placeholder="Descrição do KR (ex: Aumentar Leads em 20%)" style="flex:1;min-width:160px;" required>
+                <input class="form-input" name="target_value" type="number" step="0.01" placeholder="Meta" style="width:80px;" required>
+                <button type="submit" class="btn-save-sm">Salvar KR</button>
+                <button type="button" class="btn-cancel-sm" onclick="toggle('new-kr-{{ obj.id }}')">Cancelar</button>
+              </div>
+            </form>
+            <button class="btn-dashed" style="margin-top:10px;" onclick="toggle('new-kr-{{ obj.id }}')">+ Novo KR</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+  </main>
+</div>
+
+<div class="modal-overlay" id="modal-macro">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Estratégia macro</h3>
+      <button class="modal-close" onclick="closeModal('modal-macro')">×</button>
+    </div>
+    <form action="{{ url_for('save_macro') }}" method="POST">
+      {% if macro_objectives %}
+          <input type="hidden" name="macro_id" value="{{ macro_objectives[0].id }}">
+      {% endif %}
+      <div class="modal-field">
+        <label class="modal-label">Título do objetivo</label>
+        <input class="modal-input" name="title" type="text" value="{{ macro_objectives[0].title if macro_objectives else '' }}" placeholder="Título do objetivo" required>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Ciclo</label>
+        <input class="modal-input" name="cycle" type="text" value="{{ macro_objectives[0].cycle if macro_objectives else '' }}" placeholder="ex: 2026">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;border-radius:100px;font-size:12px;">Salvar alterações</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-dept">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Departamentos</h3>
+      <button class="modal-close" onclick="closeModal('modal-dept')">×</button>
+    </div>
+    
+    <div id="dept-list-modal" style="margin-bottom:1.5rem;display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto;padding-right:4px;">
+      {% for dept in departments %}
+      <form action="{{ url_for('save_department') }}" method="POST" class="dept-item-row">
+        <input type="hidden" name="dept_id" value="{{ dept.id }}">
+        <input class="form-input" name="name" type="text" value="{{ dept.name }}" style="flex:1;font-size:13px;padding:10px 12px;border-radius:10px;">
+        <button type="submit" class="btn-save-sm" style="border-radius:10px;">OK</button>
+      </form>
+      {% endfor %}
+    </div>
+
+    <form action="{{ url_for('save_department') }}" method="POST" style="padding-top:1.25rem;border-top:0.5px solid var(--border);display:flex;flex-direction:column;gap:10px;">
+      <input class="form-input" name="name" type="text" placeholder="Nova área (ex: Marketing)..." style="font-size:13px;padding:12px;border-radius:12px;" required>
+      <button type="submit" class="btn btn-primary" style="justify-content:center;border-radius:100px;font-size:12px;">+ Criar departamento</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Funções de Toggles e Modais mantidas exatamente iguais
+  function toggle(id) {
+    const el = document.getElementById(id);
+    if(el) el.classList.toggle('visible');
+  }
+
+  function toggleTask(taskId) {
+    const view = document.getElementById('view-' + taskId);
+    const edit = document.getElementById('edit-' + taskId);
+    if(view && edit) {
+        if(view.style.display === 'none') {
+            view.style.display = 'flex';
+            edit.style.display = 'none';
+        } else {
+            view.style.display = 'none';
+            edit.style.display = 'flex';
+        }
+    }
+  }
+
+  function openModal(id) {
+    document.getElementById(id).classList.add('visible');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('visible');
+  }
+
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) this.classList.remove('visible');
+    });
+  });
+</script>
+</body>
+</html>

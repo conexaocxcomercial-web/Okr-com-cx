@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — OKR Studio</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f9f8f6; --surface: #ffffff;
+    --border: rgba(0,0,0,0.08); --border-strong: rgba(0,0,0,0.14);
+    --text-primary: #1e1e1e; --text-secondary: #6b6b66; --text-tertiary: #a8a8a2;
+    --accent: #7371ff; 
+  }
+  body { 
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; 
+    background: var(--bg); color: var(--text-primary); 
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  }
+  .login-container {
+    background: var(--surface);
+    padding: 3rem;
+    border-radius: 24px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 420px;
+    border: 0.5px solid var(--border);
+  }
+  .logo-text { font-size: 20px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; text-align: center; margin-bottom: 2.5rem; }
+  .logo-text span.brand { color: var(--accent); }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-tertiary); margin-bottom: 8px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .form-input {
+    width: 100%; font-family: inherit; font-size: 15px; padding: 14px 0; 
+    border: none; border-bottom: 0.5px solid var(--border-strong); 
+    background: transparent; color: var(--text-primary); outline: none; transition: border-color 0.15s;
+  }
+  .form-input:focus { border-bottom-color: var(--accent); }
+  .btn-login {
+    width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 100px;
+    font-family: inherit; font-size: 14px; font-weight: 600; padding: 16px; margin-top: 1rem;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .btn-login:hover { background: #5b59cc; }
+  .error-msg {
+    color: #ff43c0; font-size: 12px; font-weight: 600; text-align: center; margin-bottom: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+    <div class="logo-text">
+        <span style="color: #1e1e1e;">OKR Com</span> <span class="brand">Conexão</span>
+    </div>
+    
+    {% if error %}
+        <p class="error-msg">{{ error }}</p>
+    {% endif %}
+
+    <form action="{{ url_for('login') }}" method="POST">
+        <div class="form-group">
+            <label class="form-label">Usuário de Acesso</label>
+            <input class="form-input" type="text" name="username" placeholder="Ex: Conexao" required autofocus>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Senha</label>
+            <input class="form-input" type="password" name="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-login">Entrar no painel</button>
+    </form>
+</div>
+
+</body>
+</html>
