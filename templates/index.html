@@ -82,7 +82,7 @@
   .obj-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color 0.2s; }
   .obj-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.5rem; }
   .obj-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 5px; }
-  .obj-title { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+  .obj-title { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.4; margin-bottom: 0; }
   .obj-progress-wrap { display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding-top: 2px; }
   .obj-progress-label { text-align: right; }
   .obj-progress-label span:first-child { display: block; font-size: 10px; color: var(--text-tertiary); margin-bottom: 2px; }
@@ -269,16 +269,19 @@
             <div style="flex: 1; padding-right: 1.5rem;">
               <p class="obj-eyebrow">Objetivo</p>
               
-              <div id="view-obj-{{ obj.id }}" style="display: flex; align-items: baseline; gap: 8px;">
+              <div id="view-obj-{{ obj.id }}" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                 <p class="obj-title">{{ obj.title }}</p>
-                <button class="btn-ghost-muted" style="padding:0; font-size:10px;" onclick="toggleObjEdit('{{ obj.id }}')" title="Editar Nome">✎ Editar</button>
                 
-                <form action="{{ url_for('delete_operational') }}" method="POST" style="display:inline; margin:0;" onsubmit="return confirm('Tem a certeza que deseja eliminar este Objetivo e TODOS os seus KRs e Tarefas?');">
-                    <input type="hidden" name="type" value="dept_objective">
-                    <input type="hidden" name="item_id" value="{{ obj.id }}">
-                    <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                    <button type="submit" class="btn-ghost-muted" style="padding:0; font-size:10px; color: #ff43c0;" title="Excluir Objetivo">Apagar</button>
-                </form>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="btn-ghost-muted" style="padding:0; font-size:10px;" onclick="toggleObjEdit('{{ obj.id }}')" title="Editar Nome">✎ Editar</button>
+                    
+                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar este Objetivo e TODOS os seus KRs e Tarefas?');">
+                        <input type="hidden" name="type" value="dept_objective">
+                        <input type="hidden" name="item_id" value="{{ obj.id }}">
+                        <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                        <button type="submit" class="btn-ghost-muted" style="padding:0; font-size:10px; color: #ff43c0;" title="Excluir Objetivo">🗑️ Apagar</button>
+                    </form>
+                </div>
               </div>
 
               <form action="{{ url_for('update_operational') }}" method="POST" id="edit-obj-{{ obj.id }}" style="display: none; align-items: center; gap: 8px; margin-top: 4px;">
@@ -321,11 +324,11 @@
                 <div class="kr-actions" style="display:flex; align-items:center; gap:10px;">
                   <button class="kr-action-btn edit-color" onclick="toggle('kr-edit-{{ kr.id }}')">✎ Editar KR e Valores</button>
                   
-                  <form action="{{ url_for('delete_operational') }}" method="POST" style="display:inline; margin:0;" onsubmit="return confirm('Tem a certeza que deseja eliminar este KR e TODAS as suas tarefas?');">
+                  <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar este KR e TODAS as suas tarefas?');">
                       <input type="hidden" name="type" value="kr">
                       <input type="hidden" name="item_id" value="{{ kr.id }}">
                       <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                      <button type="submit" class="kr-action-btn" style="color: #ff43c0;">Apagar</button>
+                      <button type="submit" class="kr-action-btn" style="color: #ff43c0;">🗑️ Apagar</button>
                   </form>
                 </div>
 
@@ -377,7 +380,7 @@
                     
                     <button class="task-edit-btn" onclick="toggleTask('{{ task.id }}')">Editar</button>
                     
-                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0;" onsubmit="return confirm('Tem a certeza que deseja eliminar esta tarefa?');">
+                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar esta tarefa?');">
                         <input type="hidden" name="type" value="task">
                         <input type="hidden" name="item_id" value="{{ task.id }}">
                         <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
