@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OKR com Conexão</title>
+<title>OKR Studio — Conexão.CX</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -91,6 +91,10 @@
   .ring-wrap svg { display: block; }
   .divider { height: 0.5px; background: var(--border); }
   
+  /* NOVO: Footer Expansível */
+  .obj-card-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 1.5rem; border-top: 0.5px solid var(--border); background: var(--surface); }
+  .obj-footer-meta { font-size: 11px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; }
+
   /* KR Section */
   .kr-section { padding: 1.25rem 1.5rem; }
   .kr-section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 10px; }
@@ -279,7 +283,7 @@
                         <input type="hidden" name="type" value="dept_objective">
                         <input type="hidden" name="item_id" value="{{ obj.id }}">
                         <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                        <button type="submit" class="btn-ghost-muted" style="padding:0; font-size:10px; color: #ff43c0;" title="Excluir Objetivo">Apagar</button>
+                        <button type="submit" class="btn-ghost-muted" style="padding:0; font-size:10px; color: #ff43c0;" title="Excluir Objetivo">🗑️ Apagar</button>
                     </form>
                 </div>
               </div>
@@ -312,134 +316,141 @@
             </div>
           </div>
 
-          <div class="divider"></div>
+          <div id="collapsible-{{ obj.id }}" style="display: none;">
+            <div class="divider"></div>
 
-          <div class="kr-section">
-            <p class="kr-section-label">Key results</p>
-            <div class="kr-list">
-              
-              {% for kr in obj.key_results %}
-              <div class="kr-item" id="kr-{{ kr.id }}">
+            <div class="kr-section">
+              <p class="kr-section-label">Key results</p>
+              <div class="kr-list">
                 
-                <div class="kr-actions" style="display:flex; align-items:center; gap:10px;">
-                  <button class="kr-action-btn edit-color" onclick="toggle('kr-edit-{{ kr.id }}')">✎ Editar KR e Valores</button>
+                {% for kr in obj.key_results %}
+                <div class="kr-item" id="kr-{{ kr.id }}">
                   
-                  <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar este KR e TODAS as suas tarefas?');">
-                      <input type="hidden" name="type" value="kr">
-                      <input type="hidden" name="item_id" value="{{ kr.id }}">
-                      <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                      <button type="submit" class="kr-action-btn" style="color: #ff43c0;">Apagar</button>
-                  </form>
-                </div>
-
-                <form action="{{ url_for('update_operational') }}" method="POST" class="kr-edit-form" id="kr-edit-{{ kr.id }}">
-                  <input type="hidden" name="type" value="kr">
-                  <input type="hidden" name="item_id" value="{{ kr.id }}">
-                  <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                  <input class="form-input" name="description" type="text" value="{{ kr.description }}" style="flex:1;min-width:160px;" required>
-                  
-                  <span style="font-size:10px; font-weight:600; color:var(--text-tertiary);">Atual:</span>
-                  <input class="form-input" name="current_value" type="number" step="0.01" value="{{ kr.current_value }}" style="width:72px;" required>
-                  
-                  <span style="font-size:10px; font-weight:600; color:var(--text-tertiary);">Meta:</span>
-                  <input class="form-input" name="target_value" type="number" step="0.01" value="{{ kr.target_value }}" style="width:72px;" required>
-                  
-                  <button type="submit" class="btn-save-sm" style="background:#ff43c0;" onmouseover="this.style.backgroundColor='#d1379e'" onmouseout="this.style.backgroundColor='#ff43c0'">Salvar</button>
-                  <button type="button" class="btn-cancel-sm" onclick="toggle('kr-edit-{{ kr.id }}')">×</button>
-                </form>
-
-                <div class="kr-item-header">
-                  <p class="kr-title">{{ kr.description }}</p>
-                  <div class="kr-numbers">
-                    <span class="kr-current">{{ kr.current_value }} / {{ kr.target_value }}</span>
-                    {% set kr_pct = ((kr.current_value / kr.target_value) * 100)|round|int if kr.target_value > 0 else 0 %}
-                    <span class="kr-pct">{{ kr_pct }}%</span>
-                  </div>
-                </div>
-                
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width:{{ kr_pct }}%"></div>
-                </div>
-
-                <div class="task-list">
-                  {% for task in kr.tasks %}
-                  
-                  {% set tag_class = 'status-todo' %}
-                  {% if task.status == 'Finalizado' %}{% set tag_class = 'status-done' %}
-                  {% elif task.status == 'Em andamento' %}{% set tag_class = 'status-doing' %}
-                  {% elif task.status == 'Pausado' %}{% set tag_class = 'status-paused' %}{% endif %}
-
-                  <div class="task-row" id="view-{{ task.id }}">
-                    <span class="status-tag {{ tag_class }}">{{ task.status }}</span>
-                    <span class="task-desc">{{ task.description }}</span>
-                    <span class="task-meta">{{ task.owner_name }}</span>
-                    <span class="task-meta">{% if task.deadline %}{{ task.deadline }}{% else %}Sem data{% endif %}</span>
-                    {% if task.deliverable_link %}
-                        <a href="{{ task.deliverable_link }}" target="_blank" class="task-link">LINK</a>
-                    {% endif %}
+                  <div class="kr-actions" style="display:flex; align-items:center; gap:10px;">
+                    <button class="kr-action-btn edit-color" onclick="toggle('kr-edit-{{ kr.id }}')">✎ Editar KR e Valores</button>
                     
-                    <button class="task-edit-btn" onclick="toggleTask('{{ task.id }}')">Editar</button>
-                    
-                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar esta tarefa?');">
-                        <input type="hidden" name="type" value="task">
-                        <input type="hidden" name="item_id" value="{{ task.id }}">
+                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar este KR e TODAS as suas tarefas?');">
+                        <input type="hidden" name="type" value="kr">
+                        <input type="hidden" name="item_id" value="{{ kr.id }}">
                         <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                        <button type="submit" class="task-edit-btn" style="color: #ff43c0; margin-left: 4px;">Apagar</button>
+                        <button type="submit" class="kr-action-btn" style="color: #ff43c0;">🗑️ Apagar</button>
                     </form>
                   </div>
 
-                  <form id="edit-{{ task.id }}" action="{{ url_for('update_operational') }}" method="POST" class="edit-form">
-                    <input type="hidden" name="type" value="task">
-                    <input type="hidden" name="item_id" value="{{ task.id }}">
+                  <form action="{{ url_for('update_operational') }}" method="POST" class="kr-edit-form" id="kr-edit-{{ kr.id }}">
+                    <input type="hidden" name="type" value="kr">
+                    <input type="hidden" name="item_id" value="{{ kr.id }}">
                     <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                    <input class="form-input" name="description" type="text" value="{{ kr.description }}" style="flex:1;min-width:160px;" required>
                     
-                    <select name="status" class="form-select">
-                      <option value="Não iniciado" {% if task.status == 'Não iniciado' %}selected{% endif %}>Não iniciado</option>
-                      <option value="Em andamento" {% if task.status == 'Em andamento' %}selected{% endif %}>Em andamento</option>
-                      <option value="Pausado" {% if task.status == 'Pausado' %}selected{% endif %}>Pausado</option>
-                      <option value="Finalizado" {% if task.status == 'Finalizado' %}selected{% endif %}>Finalizado</option>
-                    </select>
-                    <input class="form-input" name="description" type="text" value="{{ task.description }}" style="flex:1;min-width:120px;" required>
-                    <input class="form-input" name="owner_name" type="text" value="{{ task.owner_name }}" style="width:80px;">
-                    <input class="form-input" name="deadline" type="date" value="{{ task.deadline if task.deadline else '' }}" style="width:110px;">
-                    <input class="form-input" name="deliverable_link" type="url" value="{{ task.deliverable_link or '' }}" placeholder="Link" style="width:80px;">
-                    <button type="submit" class="btn-save-sm">OK</button>
-                    <button type="button" class="btn-cancel-sm" onclick="toggleTask('{{ task.id }}')">×</button>
+                    <span style="font-size:10px; font-weight:600; color:var(--text-tertiary);">Atual:</span>
+                    <input class="form-input" name="current_value" type="number" step="0.01" value="{{ kr.current_value }}" style="width:72px;" required>
+                    
+                    <span style="font-size:10px; font-weight:600; color:var(--text-tertiary);">Meta:</span>
+                    <input class="form-input" name="target_value" type="number" step="0.01" value="{{ kr.target_value }}" style="width:72px;" required>
+                    
+                    <button type="submit" class="btn-save-sm" style="background:#ff43c0;" onmouseover="this.style.backgroundColor='#d1379e'" onmouseout="this.style.backgroundColor='#ff43c0'">Salvar</button>
+                    <button type="button" class="btn-cancel-sm" onclick="toggle('kr-edit-{{ kr.id }}')">×</button>
                   </form>
-                  {% endfor %}
+
+                  <div class="kr-item-header">
+                    <p class="kr-title">{{ kr.description }}</p>
+                    <div class="kr-numbers">
+                      <span class="kr-current">{{ kr.current_value }} / {{ kr.target_value }}</span>
+                      {% set kr_pct = ((kr.current_value / kr.target_value) * 100)|round|int if kr.target_value > 0 else 0 %}
+                      <span class="kr-pct">{{ kr_pct }}%</span>
+                    </div>
+                  </div>
+                  
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width:{{ kr_pct }}%"></div>
+                  </div>
+
+                  <div class="task-list">
+                    {% for task in kr.tasks %}
+                    
+                    {% set tag_class = 'status-todo' %}
+                    {% if task.status == 'Finalizado' %}{% set tag_class = 'status-done' %}
+                    {% elif task.status == 'Em andamento' %}{% set tag_class = 'status-doing' %}
+                    {% elif task.status == 'Pausado' %}{% set tag_class = 'status-paused' %}{% endif %}
+
+                    <div class="task-row" id="view-{{ task.id }}">
+                      <span class="status-tag {{ tag_class }}">{{ task.status }}</span>
+                      <span class="task-desc">{{ task.description }}</span>
+                      <span class="task-meta">{{ task.owner_name }}</span>
+                      <span class="task-meta">{% if task.deadline %}{{ task.deadline }}{% else %}Sem data{% endif %}</span>
+                      {% if task.deliverable_link %}
+                          <a href="{{ task.deliverable_link }}" target="_blank" class="task-link">LINK</a>
+                      {% endif %}
+                      
+                      <button class="task-edit-btn" onclick="toggleTask('{{ task.id }}')">Editar</button>
+                      
+                      <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar esta tarefa?');">
+                          <input type="hidden" name="type" value="task">
+                          <input type="hidden" name="item_id" value="{{ task.id }}">
+                          <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                          <button type="submit" class="task-edit-btn" style="color: #ff43c0; margin-left: 4px;">Apagar</button>
+                      </form>
+                    </div>
+
+                    <form id="edit-{{ task.id }}" action="{{ url_for('update_operational') }}" method="POST" class="edit-form">
+                      <input type="hidden" name="type" value="task">
+                      <input type="hidden" name="item_id" value="{{ task.id }}">
+                      <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                      
+                      <select name="status" class="form-select">
+                        <option value="Não iniciado" {% if task.status == 'Não iniciado' %}selected{% endif %}>Não iniciado</option>
+                        <option value="Em andamento" {% if task.status == 'Em andamento' %}selected{% endif %}>Em andamento</option>
+                        <option value="Pausado" {% if task.status == 'Pausado' %}selected{% endif %}>Pausado</option>
+                        <option value="Finalizado" {% if task.status == 'Finalizado' %}selected{% endif %}>Finalizado</option>
+                      </select>
+                      <input class="form-input" name="description" type="text" value="{{ task.description }}" style="flex:1;min-width:120px;" required>
+                      <input class="form-input" name="owner_name" type="text" value="{{ task.owner_name }}" style="width:80px;">
+                      <input class="form-input" name="deadline" type="date" value="{{ task.deadline if task.deadline else '' }}" style="width:110px;">
+                      <input class="form-input" name="deliverable_link" type="url" value="{{ task.deliverable_link or '' }}" placeholder="Link" style="width:80px;">
+                      <button type="submit" class="btn-save-sm">OK</button>
+                      <button type="button" class="btn-cancel-sm" onclick="toggleTask('{{ task.id }}')">×</button>
+                    </form>
+                    {% endfor %}
+                  </div>
+
+                  <button class="btn-ghost-muted" style="margin-top:8px;" onclick="toggle('add-task-{{ kr.id }}')">+ Adicionar tarefa</button>
+                  <form id="add-task-{{ kr.id }}" action="{{ url_for('create_operational') }}" method="POST" class="add-task-form">
+                    <input type="hidden" name="type" value="task">
+                    <input type="hidden" name="parent_id" value="{{ kr.id }}">
+                    <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                    <input class="form-input" name="description" type="text" placeholder="O que precisa ser feito?" style="flex:1;min-width:160px;" required>
+                    <input class="form-input" name="owner_name" type="text" placeholder="Quem?" style="width:90px;">
+                    <input class="form-input" name="deadline" type="date" style="width:120px;">
+                    <input class="form-input" name="deliverable_link" type="url" placeholder="Link (opcional)" style="width:80px;">
+                    <button type="submit" class="btn-save-sm">Salvar</button>
+                    <button type="button" class="btn-cancel-sm" onclick="toggle('add-task-{{ kr.id }}')">×</button>
+                  </form>
+
                 </div>
+                {% endfor %}
+              </div>
 
-                <button class="btn-ghost-muted" style="margin-top:8px;" onclick="toggle('add-task-{{ kr.id }}')">+ Adicionar tarefa</button>
-                <form id="add-task-{{ kr.id }}" action="{{ url_for('create_operational') }}" method="POST" class="add-task-form">
-                  <input type="hidden" name="type" value="task">
-                  <input type="hidden" name="parent_id" value="{{ kr.id }}">
+              <form id="new-kr-{{ obj.id }}" action="{{ url_for('create_operational') }}" method="POST" class="new-kr-form">
+                <p style="font-size:11px;font-weight:600;color:var(--text-tertiary);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px;">Novo Key Result</p>
+                <div class="new-kr-row">
+                  <input type="hidden" name="type" value="kr">
+                  <input type="hidden" name="parent_id" value="{{ obj.id }}">
                   <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                  <input class="form-input" name="description" type="text" placeholder="O que precisa ser feito?" style="flex:1;min-width:160px;" required>
-                  <input class="form-input" name="owner_name" type="text" placeholder="Quem?" style="width:90px;">
-                  <input class="form-input" name="deadline" type="date" style="width:120px;">
-                  <input class="form-input" name="deliverable_link" type="url" placeholder="Link (opcional)" style="width:80px;">
-                  <button type="submit" class="btn-save-sm">Salvar</button>
-                  <button type="button" class="btn-cancel-sm" onclick="toggle('add-task-{{ kr.id }}')">×</button>
-                </form>
-
-              </div>
-              {% endfor %}
+                  <input class="form-input" name="description" type="text" placeholder="Descrição do KR (ex: Aumentar Leads em 20%)" style="flex:1;min-width:160px;" required>
+                  <input class="form-input" name="target_value" type="number" step="0.01" placeholder="Meta" style="width:80px;" required>
+                  <button type="submit" class="btn-save-sm">Salvar KR</button>
+                  <button type="button" class="btn-cancel-sm" onclick="toggle('new-kr-{{ obj.id }}')">Cancelar</button>
+                </div>
+              </form>
+              <button class="btn-dashed" style="margin-top:10px;" onclick="toggle('new-kr-{{ obj.id }}')">+ Novo KR</button>
             </div>
-
-            <form id="new-kr-{{ obj.id }}" action="{{ url_for('create_operational') }}" method="POST" class="new-kr-form">
-              <p style="font-size:11px;font-weight:600;color:var(--text-tertiary);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px;">Novo Key Result</p>
-              <div class="new-kr-row">
-                <input type="hidden" name="type" value="kr">
-                <input type="hidden" name="parent_id" value="{{ obj.id }}">
-                <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                <input class="form-input" name="description" type="text" placeholder="Descrição do KR (ex: Aumentar Leads em 20%)" style="flex:1;min-width:160px;" required>
-                <input class="form-input" name="target_value" type="number" step="0.01" placeholder="Meta" style="width:80px;" required>
-                <button type="submit" class="btn-save-sm">Salvar KR</button>
-                <button type="button" class="btn-cancel-sm" onclick="toggle('new-kr-{{ obj.id }}')">Cancelar</button>
-              </div>
-            </form>
-            <button class="btn-dashed" style="margin-top:10px;" onclick="toggle('new-kr-{{ obj.id }}')">+ Novo KR</button>
           </div>
+          <div class="obj-card-footer">
+            <span class="obj-footer-meta">{{ obj.key_results|length }} Key Results</span>
+            <button class="btn-ghost" id="toggle-btn-{{ obj.id }}" onclick="toggleObjective('{{ obj.id }}')">Expandir ▼</button>
+          </div>
+
         </div>
         {% endfor %}
       </div>
@@ -526,6 +537,21 @@
         } else {
             view.style.display = 'none';
             edit.style.display = 'flex';
+        }
+    }
+  }
+
+  // NOVO: Função para o Expandir/Recolher dos Objetivos
+  function toggleObjective(objId) {
+    const content = document.getElementById('collapsible-' + objId);
+    const btn = document.getElementById('toggle-btn-' + objId);
+    if(content && btn) {
+        if(content.style.display === 'none') {
+            content.style.display = 'block';
+            btn.innerHTML = 'Recolher ▲';
+        } else {
+            content.style.display = 'none';
+            btn.innerHTML = 'Expandir ▼';
         }
     }
   }
