@@ -183,6 +183,23 @@ def update_operational():
         }).eq('id', item_id).execute()
 
     return redirect(url_for('index', dept_id=dept_id))
+    
+# --- EXCLUSÃO OPERACIONAL ---
+@app.route('/operational/delete', methods=['POST'])
+@login_required
+def delete_operational():
+    item_type = request.form.get('type')
+    item_id = request.form.get('item_id')
+    dept_id = request.form.get('dept_id')
+
+    if item_type == 'dept_objective':
+        supabase.table('dept_objectives').delete().eq('id', item_id).execute()
+    elif item_type == 'kr':
+        supabase.table('key_results').delete().eq('id', item_id).execute()
+    elif item_type == 'task':
+        supabase.table('tasks').delete().eq('id', item_id).execute()
+
+    return redirect(url_for('index', dept_id=dept_id))
 
 if __name__ == '__main__':
     # Em produção (Render), o Gunicorn ignora isto, mas ajuda no teste local
