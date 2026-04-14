@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OKR com Conexão</title>
+<title>OKR Studio — Conexão.CX</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -114,7 +114,8 @@
   .task-link { font-size: 10px; font-weight: 600; color: var(--accent); text-decoration: none; flex-shrink: 0; }
   .task-link:hover { text-decoration: underline; }
   .task-edit-btn { font-size: 10px; font-weight: 600; color: transparent; background: none; border: none; cursor: pointer; font-family: inherit; transition: color 0.15s; flex-shrink: 0; padding: 0; }
-  .task-row:hover .task-edit-btn { color: #ff43c0; }
+  .task-row:hover .task-edit-btn { color: #a8a8a2; }
+  .task-row:hover .task-edit-btn:hover { color: #ff43c0; }
   
   /* Forms */
   .edit-form { display: none; align-items: center; gap: 6px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px; margin: 4px 0; }
@@ -271,6 +272,13 @@
               <div id="view-obj-{{ obj.id }}" style="display: flex; align-items: baseline; gap: 8px;">
                 <p class="obj-title">{{ obj.title }}</p>
                 <button class="btn-ghost-muted" style="padding:0; font-size:10px;" onclick="toggleObjEdit('{{ obj.id }}')" title="Editar Nome">✎ Editar</button>
+                
+                <form action="{{ url_for('delete_operational') }}" method="POST" style="display:inline; margin:0;" onsubmit="return confirm('Tem a certeza que deseja eliminar este Objetivo e TODOS os seus KRs e Tarefas?');">
+                    <input type="hidden" name="type" value="dept_objective">
+                    <input type="hidden" name="item_id" value="{{ obj.id }}">
+                    <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                    <button type="submit" class="btn-ghost-muted" style="padding:0; font-size:10px; color: #ff43c0;" title="Excluir Objetivo">🗑️ Apagar</button>
+                </form>
               </div>
 
               <form action="{{ url_for('update_operational') }}" method="POST" id="edit-obj-{{ obj.id }}" style="display: none; align-items: center; gap: 8px; margin-top: 4px;">
@@ -310,8 +318,15 @@
               {% for kr in obj.key_results %}
               <div class="kr-item" id="kr-{{ kr.id }}">
                 
-                <div class="kr-actions">
+                <div class="kr-actions" style="display:flex; align-items:center; gap:10px;">
                   <button class="kr-action-btn edit-color" onclick="toggle('kr-edit-{{ kr.id }}')">✎ Editar KR e Valores</button>
+                  
+                  <form action="{{ url_for('delete_operational') }}" method="POST" style="display:inline; margin:0;" onsubmit="return confirm('Tem a certeza que deseja eliminar este KR e TODAS as suas tarefas?');">
+                      <input type="hidden" name="type" value="kr">
+                      <input type="hidden" name="item_id" value="{{ kr.id }}">
+                      <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                      <button type="submit" class="kr-action-btn" style="color: #ff43c0;">🗑️ Apagar</button>
+                  </form>
                 </div>
 
                 <form action="{{ url_for('update_operational') }}" method="POST" class="kr-edit-form" id="kr-edit-{{ kr.id }}">
@@ -359,7 +374,15 @@
                     {% if task.deliverable_link %}
                         <a href="{{ task.deliverable_link }}" target="_blank" class="task-link">LINK</a>
                     {% endif %}
+                    
                     <button class="task-edit-btn" onclick="toggleTask('{{ task.id }}')">Editar</button>
+                    
+                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0;" onsubmit="return confirm('Tem a certeza que deseja eliminar esta tarefa?');">
+                        <input type="hidden" name="type" value="task">
+                        <input type="hidden" name="item_id" value="{{ task.id }}">
+                        <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                        <button type="submit" class="task-edit-btn" style="color: #ff43c0; margin-left: 4px;">Apagar</button>
+                    </form>
                   </div>
 
                   <form id="edit-{{ task.id }}" action="{{ url_for('update_operational') }}" method="POST" class="edit-form">
@@ -490,7 +513,6 @@
     }
   }
 
-  // NOVA FUNÇÃO: Alterna a edição do Objetivo
   function toggleObjEdit(objId) {
     const view = document.getElementById('view-obj-' + objId);
     const edit = document.getElementById('edit-obj-' + objId);
