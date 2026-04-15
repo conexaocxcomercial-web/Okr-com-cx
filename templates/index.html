@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OKR Studio — Conexão.CX</title>
+<title>OKR com Conexão</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -91,7 +91,7 @@
   .ring-wrap svg { display: block; }
   .divider { height: 0.5px; background: var(--border); }
   
-  /* Footer Expansível */
+  /* NOVO: Footer Expansível */
   .obj-card-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 1.5rem; border-top: 0.5px solid var(--border); background: var(--surface); }
   .obj-footer-meta { font-size: 11px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; }
 
@@ -187,7 +187,6 @@
     <nav class="sidebar-nav">
       <p class="nav-label">Visão geral</p>
       <a class="nav-item active" href="/"><span class="nav-dot"></span>Estratégia</a>
-      <a class="nav-item" href="/dashboard"><span class="nav-dot"></span>Dashboard</a>
       
       <p class="nav-label">Operacional</p>
       {% for dept in departments %}
@@ -542,6 +541,7 @@
     }
   }
 
+  // NOVO: Função para o Expandir/Recolher dos Objetivos
   function toggleObjective(objId) {
     const content = document.getElementById('collapsible-' + objId);
     const btn = document.getElementById('toggle-btn-' + objId);
