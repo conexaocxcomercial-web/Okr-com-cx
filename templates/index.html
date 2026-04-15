@@ -6,223 +6,171 @@
 <title>OKR Studio — Conexão.CX</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  
   :root {
-    /* Paleta Ultra-Premium */
-    --bg: #FAFAFA; 
-    --surface: #FFFFFF; 
-    --surface-hover: #F4F5F7;
-    
-    --border: #E5E7EB; 
-    --border-strong: #D1D5DB;
-    
-    --text-primary: #111827; 
-    --text-secondary: #4B5563; 
-    --text-tertiary: #9CA3AF;
-    
-    /* Cores da Marca */
-    --accent: #7371ff; 
-    --accent-bg: #EEEDFE; 
-    --accent-hover: #5b59cc;
-    
-    --green: #bef533; 
-    --green-dark: #8cb81a;
-    
-    --danger: #ff43c0;
-    --danger-bg: #FEF0F9;
-    
-    --radius-sm: 6px; 
-    --radius-md: 8px; 
-    --radius-lg: 12px; 
-    --radius-xl: 16px;
-    
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --bg: #f9f8f6; --surface: #ffffff; --surface-2: #f4f3f0;
+    --border: rgba(0,0,0,0.08); --border-strong: rgba(0,0,0,0.14);
+    --text-primary: #1e1e1e; --text-secondary: #6b6b66; --text-tertiary: #a8a8a2;
+    --accent: #7371ff; --accent-bg: #EEEDFE; --accent-light: #AFA9EC;
+    --green: #bef533; --green-bg: #E1F5EE; --green-text: #0F6E56;
+    --amber-bg: #FAEEDA; --amber-text: #854F0B;
+    --gray-bg: #F1EFE8; --gray-text: #5F5E5A;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px;
   }
-
-  html { font-size: 14px; } /* Base menor para interface SaaS compacta */
-  body { 
-    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; 
-    background: var(--bg); 
-    color: var(--text-primary); 
-    min-height: 100vh; 
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-  
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+  body { font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; }
   .layout { display: flex; min-height: 100vh; }
   
-  /* --- SIDEBAR SAAAS --- */
-  .sidebar { width: 240px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 24px 16px; display: flex; flex-direction: column; gap: 32px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
-  .sidebar-logo { display: flex; align-items: center; padding: 0 8px; }
-  .logo-text { font-size: 15px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
-  
-  .sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
-  .nav-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); padding: 0 8px; margin-bottom: 8px; margin-top: 16px; }
-  
-  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.2s ease; text-decoration: none; }
-  .nav-item:hover { background: var(--surface-hover); color: var(--text-primary); }
+  /* Sidebar */
+  .sidebar { width: 220px; flex-shrink: 0; background: var(--surface); border-right: 0.5px solid var(--border); padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 2rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar-logo { display: flex; align-items: center; gap: 0; }
+  .logo-text { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+  .nav-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); padding: 0 8px; margin-bottom: 6px; margin-top: 8px; }
+  .nav-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--radius-sm); font-size: 13px; color: var(--text-secondary); cursor: pointer; transition: background 0.15s, color 0.15s; text-decoration: none; font-family: inherit;}
+  .nav-item:hover { background: var(--surface-2); color: var(--text-primary); }
   .nav-item.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
-  
-  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.3; flex-shrink: 0; }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.4; flex-shrink: 0; }
   .nav-item.active .nav-dot { opacity: 1; }
-  
-  .sidebar-footer { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); }
-  .user-pill { display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: var(--radius-sm); transition: background 0.2s; }
-  .user-pill:hover { background: var(--surface-hover); }
-  .avatar { width: 24px; height: 24px; border-radius: 4px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
-  .user-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+  .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 0.5px solid var(--border); }
+  .user-pill { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--radius-sm); }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-bg); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
+  .user-name { font-size: 12px; font-weight: 500; color: var(--text-primary); }
   .user-role { font-size: 11px; color: var(--text-tertiary); }
   
-  /* --- MAIN CONTENT --- */
-  .main { flex: 1; padding: 40px 48px; max-width: 1080px; margin: 0 auto; overflow-x: hidden; }
+  /* Main & Header */
+  .main { flex: 1; padding: 2.5rem 3rem; max-width: 1000px; overflow-x: hidden; }
+  .page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; padding-bottom: 2rem; margin-bottom: 2rem; border-bottom: 0.5px solid var(--border); }
+  .page-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .page-title { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); line-height: 1.2; }
+  .page-cycle { font-size: 13px; color: var(--text-tertiary); margin-top: 4px; }
+  .header-actions { display: flex; gap: 8px; flex-shrink: 0; padding-top: 4px; }
   
-  /* Header */
-  .page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-bottom: 24px; margin-bottom: 32px; border-bottom: 1px solid var(--border); }
-  .page-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-  .page-title { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; color: var(--text-primary); line-height: 1.1; }
-  .page-cycle { font-size: 13px; font-weight: 500; color: var(--text-tertiary); margin-top: 6px; }
-  .header-actions { display: flex; gap: 12px; flex-shrink: 0; }
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: 6px; font-family: inherit; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; padding: 7px 16px; border-radius: 100px; border: 0.5px solid var(--border-strong); background: var(--surface); color: var(--text-secondary); cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s; white-space: nowrap; text-decoration: none;}
+  .btn:hover { background: var(--surface-2); color: var(--text-primary); }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #5b59cc; border-color: #5b59cc; color: #fff; }
+  .btn-ghost { background: none; border: none; color: var(--accent); padding: 4px 0; font-size: 11px; font-weight: 600; cursor: pointer; font-family: inherit; letter-spacing: 0.02em; }
+  .btn-ghost:hover { text-decoration: underline; }
+  .btn-ghost-muted { background: none; border: none; color: var(--text-tertiary); padding: 4px 0; font-size: 11px; font-weight: 400; cursor: pointer; font-family: inherit; }
+  .btn-ghost-muted:hover { color: var(--accent); }
+  .btn-dashed { background: none; border: 0.5px dashed var(--border-strong); color: var(--text-tertiary); width: 100%; justify-content: center; border-radius: var(--radius-sm); padding: 9px; font-size: 11px; font-weight: 400; cursor: pointer; font-family: inherit; transition: border-color 0.15s, color 0.15s; }
+  .btn-dashed:hover { border-color: var(--accent); color: var(--accent); }
   
-  /* Buttons Modernos */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: inherit; font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all 0.2s; white-space: nowrap; text-decoration: none; box-shadow: var(--shadow-sm); }
-  .btn:hover { background: var(--surface-hover); border-color: var(--border-strong); }
+  /* Dept pills */
+  .dept-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .dept-pill { padding: 6px 18px; border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.15s, color 0.15s; border: 0.5px solid transparent; background: var(--surface); color: var(--text-secondary); border-color: var(--border); text-decoration: none;}
+  .dept-pill:hover { background: var(--surface-2); color: var(--text-primary); }
+  .dept-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
   
-  .btn-primary { background: var(--text-primary); color: #fff; border: 1px solid transparent; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-  .btn-primary:hover { background: var(--accent); color: #fff; }
-  
-  /* Segmented Controls (Departamentos) */
-  .dept-pills { display: inline-flex; flex-wrap: wrap; background: #EAEBEE; padding: 4px; border-radius: var(--radius-md); gap: 2px; margin-bottom: 32px; }
-  .dept-pill { padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); text-decoration: none; }
-  .dept-pill:hover { color: var(--text-primary); }
-  .dept-pill.active { background: var(--surface); color: var(--text-primary); box-shadow: var(--shadow-sm); font-weight: 600; }
-  
-  /* Section Header */
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-  .section-title { display: flex; align-items: center; gap: 12px; }
-  .section-title h2 { font-size: 18px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
-  .badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  /* Section header */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .section-title { display: flex; align-items: center; gap: 10px; }
+  .section-title h2 { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 100px; }
   .badge-purple { background: var(--accent-bg); color: var(--accent); }
   
-  /* Status Tags Ultra-Slick */
-  .status-tag { display: inline-flex; align-items: center; justify-content: center; min-width: 85px; font-size: 10px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; border: 1px solid transparent; }
-  .status-done { background: var(--green); color: #1e1e1e; }
+  /* Status tags */
+  .status-tag { display: inline-flex; align-items: center; justify-content: center; width: 90px; gap: 4px; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+  .status-done { background: var(--green-bg); color: var(--green-text); }
   .status-doing { background: var(--accent-bg); color: var(--accent); }
-  .status-paused { background: var(--surface-hover); color: var(--text-secondary); border-color: var(--border); }
-  .status-todo { background: #ffffff; color: var(--text-tertiary); border-color: var(--border-strong); }
+  .status-todo { background: var(--gray-bg); color: var(--gray-text); }
+  .status-paused { background: var(--amber-bg); color: var(--amber-text); }
   
-  /* --- OBJETIVOS CARDS --- */
-  .obj-list { display: flex; flex-direction: column; gap: 24px; }
-  .obj-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: border-color 0.2s, box-shadow 0.2s; }
-  .obj-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-md); }
-  
-  .obj-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 24px; }
-  .obj-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
-  .obj-title { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.4; margin-bottom: 0; letter-spacing: -0.01em; }
-  
-  .obj-progress-wrap { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+  /* Obj Card & Layout */
+  .obj-list { display: flex; flex-direction: column; gap: 1.25rem; }
+  .obj-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color 0.2s; }
+  .obj-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.5rem; }
+  .obj-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 5px; }
+  .obj-title { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.4; margin-bottom: 0; }
+  .obj-progress-wrap { display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding-top: 2px; }
   .obj-progress-label { text-align: right; }
-  .obj-progress-label span:first-child { display: block; font-size: 11px; font-weight: 500; color: var(--text-tertiary); margin-bottom: 2px; }
-  .obj-progress-label span:last-child { font-size: 20px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
-  
-  .ring-wrap { width: 44px; height: 44px; flex-shrink: 0; }
+  .obj-progress-label span:first-child { display: block; font-size: 10px; color: var(--text-tertiary); margin-bottom: 2px; }
+  .obj-progress-label span:last-child { font-size: 18px; font-weight: 600; color: var(--text-primary); font-family: inherit; }
+  .ring-wrap { width: 42px; height: 42px; flex-shrink: 0; }
   .ring-wrap svg { display: block; }
+  .divider { height: 0.5px; background: var(--border); }
   
-  /* Links de Ação (Sem emojis, puros e limpos) */
-  .action-link { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-tertiary); background: none; border: none; cursor: pointer; transition: color 0.2s; padding: 4px; }
-  .action-link:hover { color: var(--accent); }
-  .action-link.danger:hover { color: var(--danger); }
-  .action-link.ghost { color: var(--text-secondary); text-transform: none; font-size: 13px; font-weight: 500; }
-  .action-link.ghost:hover { color: var(--accent); }
-  
-  .obj-header-actions { display: flex; align-items: center; gap: 12px; margin-top: 8px; opacity: 0.4; transition: opacity 0.2s; }
-  .obj-card-header:hover .obj-header-actions { opacity: 1; }
+  /* NOVO: Footer Expansível */
+  .obj-card-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 1.5rem; border-top: 0.5px solid var(--border); background: var(--surface); }
+  .obj-footer-meta { font-size: 11px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; }
 
-  /* Footer do Card (Expandir) */
-  .obj-card-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; border-top: 1px solid var(--border); background: var(--surface); border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
-  .obj-footer-meta { font-size: 12px; font-weight: 500; color: var(--text-tertiary); }
-
-  /* --- KR SECTION --- */
-  .kr-section { padding: 24px; border-top: 1px solid var(--border); background: #FCFCFD; }
-  .kr-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 16px; }
+  /* KR Section */
+  .kr-section { padding: 1.25rem 1.5rem; }
+  .kr-section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 10px; }
+  .kr-list { display: flex; flex-direction: column; gap: 10px; }
+  .kr-item { background: var(--surface-2); border-radius: var(--radius-md); padding: 1rem 1.25rem; }
+  .kr-item-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .kr-title { font-size: 13px; font-weight: 600; color: var(--text-primary); flex: 1; line-height: 1.4; }
+  .kr-numbers { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .kr-current { font-size: 12px; color: var(--text-tertiary); font-family: inherit; }
+  .kr-pct { font-size: 13px; font-weight: 600; color: var(--text-primary); font-family: inherit; min-width: 36px; text-align: right; }
   
-  .kr-list { display: flex; flex-direction: column; gap: 16px; }
-  .kr-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-sm); }
+  /* Progress Bar */
+  .progress-bar { height: 3px; background: rgba(0,0,0,0.07); border-radius: 100px; overflow: hidden; margin-bottom: 12px; }
+  .progress-fill { height: 100%; background: var(--green); border-radius: 100px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
   
-  .kr-item-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
-  .kr-title { font-size: 14px; font-weight: 600; color: var(--text-primary); flex: 1; line-height: 1.4; }
-  .kr-numbers { display: flex; align-items: baseline; gap: 8px; flex-shrink: 0; }
-  .kr-current { font-size: 13px; font-weight: 500; color: var(--text-tertiary); }
-  .kr-pct { font-size: 15px; font-weight: 700; color: var(--text-primary); text-align: right; }
-  
-  .kr-actions { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; opacity: 0.3; transition: opacity 0.2s; }
-  .kr-item:hover .kr-actions { opacity: 1; }
-  
-  /* Progress Bar KR */
-  .progress-bar { height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 20px; }
-  .progress-fill { height: 100%; background: var(--green-dark); border-radius: 4px; transition: width 0.8s ease; }
-  
-  /* --- TASKS --- */
-  .task-list { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
-  .task-row { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid transparent; transition: all 0.2s; position: relative; }
-  .task-row:hover { background: var(--surface-hover); border-color: var(--border); }
-  
-  .task-desc { font-size: 13px; font-weight: 500; color: var(--text-primary); flex: 1; line-height: 1.4; }
-  .task-meta { font-size: 12px; color: var(--text-tertiary); white-space: nowrap; flex-shrink: 0; width: 90px; }
-  
-  .task-link { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--accent); text-decoration: none; flex-shrink: 0; }
+  /* Tasks */
+  .task-list { display: flex; flex-direction: column; }
+  .task-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-top: 0.5px solid var(--border); position: relative; }
+  .task-desc { font-size: 12px; color: var(--text-secondary); flex: 1; line-height: 1.4; }
+  .task-meta { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; flex-shrink: 0; font-family: inherit; width: 80px;}
+  .task-link { font-size: 10px; font-weight: 600; color: var(--accent); text-decoration: none; flex-shrink: 0; }
   .task-link:hover { text-decoration: underline; }
+  .task-edit-btn { font-size: 10px; font-weight: 600; color: transparent; background: none; border: none; cursor: pointer; font-family: inherit; transition: color 0.15s; flex-shrink: 0; padding: 0; }
+  .task-row:hover .task-edit-btn { color: #a8a8a2; }
+  .task-row:hover .task-edit-btn:hover { color: #ff43c0; }
   
-  .task-row-actions { display: flex; gap: 8px; opacity: 0; transition: opacity 0.2s; }
-  .task-row:hover .task-row-actions { opacity: 1; }
-
-  /* --- FORMS & INPUTS MODERNOS --- */
-  .form-input { font-family: inherit; font-size: 13px; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text-primary); outline: none; transition: all 0.2s; box-shadow: var(--shadow-sm); width: 100%; }
-  .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
+  /* Forms */
+  .edit-form { display: none; align-items: center; gap: 6px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px; margin: 4px 0; }
+  .edit-form.visible { display: flex; flex-wrap: wrap; }
+  .form-input { font-family: inherit; font-size: 11px; padding: 5px 8px; border: 0.5px solid var(--border-strong); border-radius: 6px; background: var(--surface); color: var(--text-primary); outline: none; transition: border-color 0.15s; }
+  .form-input:focus { border-color: var(--accent); }
+  .form-select { font-family: inherit; font-size: 11px; padding: 5px 8px; border: 0.5px solid var(--border-strong); border-radius: 6px; background: var(--surface); color: var(--text-primary); outline: none; cursor: pointer; }
+  .btn-save-sm { background: var(--accent); color: #fff; border: none; border-radius: 6px; font-family: inherit; font-size: 10px; font-weight: 600; padding: 5px 12px; cursor: pointer; white-space: nowrap; }
+  .btn-save-sm:hover { background: #5b59cc; }
+  .btn-cancel-sm { background: none; border: none; color: var(--text-tertiary); font-family: inherit; font-size: 10px; cursor: pointer; padding: 0 4px; }
+  .add-task-form { display: none; margin-top: 6px; }
+  .add-task-form.visible { display: flex; flex-wrap: wrap; gap: 6px; }
+  .add-task-form .form-input:first-child { flex: 1; min-width: 160px; }
   
-  .form-select { font-family: inherit; font-size: 13px; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text-primary); outline: none; cursor: pointer; box-shadow: var(--shadow-sm); }
+  /* KR Actions */
+  .kr-edit-form { display: none; align-items: center; gap: 6px; background: #FEF0F9; border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 10px; }
+  .kr-edit-form.visible { display: flex; flex-wrap: wrap; }
+  .kr-actions { display: flex; gap: 10px; margin-bottom: 8px; }
+  .kr-action-btn { font-size: 10px; font-weight: 600; background: none; border: none; cursor: pointer; font-family: inherit; color: var(--text-tertiary); padding: 0; transition: color 0.15s; }
+  .kr-action-btn:hover { color: var(--accent); }
+  .kr-action-btn.edit-color:hover { color: #ff43c0; }
   
-  .btn-save-sm { background: var(--text-primary); color: #fff; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 12px; font-weight: 600; padding: 10px 16px; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
-  .btn-save-sm:hover { background: var(--accent); }
-  .btn-save-sm.danger { background: var(--danger); }
-  .btn-save-sm.danger:hover { background: #d1379e; }
-  
-  .btn-cancel-sm { background: none; border: none; color: var(--text-tertiary); font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer; padding: 8px; }
-  .btn-cancel-sm:hover { color: var(--text-primary); }
-
-  /* Form Containers */
-  .edit-form, .add-task-form, .kr-edit-form { display: none; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; margin: 8px 0; box-shadow: var(--shadow-md); }
-  .edit-form.visible, .add-task-form.visible, .kr-edit-form.visible { display: flex; flex-wrap: wrap; }
-  
-  .new-kr-form { display: none; flex-direction: column; gap: 12px; background: var(--surface); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 20px; margin-top: 16px; }
+  /* New Forms */
+  .new-kr-form { display: none; flex-direction: column; gap: 8px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; }
   .new-kr-form.visible { display: flex; }
-  .new-kr-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-
-  .new-obj-form { display: none; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 24px; box-shadow: var(--shadow-md); }
+  .new-kr-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .new-obj-form { display: none; align-items: center; gap: 10px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
   .new-obj-form.visible { display: flex; }
-
-  /* --- MODALS (ESTILO DIALOG) --- */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(17, 24, 39, 0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 24px; }
-  .modal-overlay.visible { display: flex; animation: fadeIn 0.2s ease-out; }
-  .modal { background: var(--surface); border-radius: var(--radius-xl); padding: 32px; width: 100%; max-width: 440px; box-shadow: var(--shadow-float); border: 1px solid rgba(255,255,255,0.1); }
+  .new-obj-form .form-input { font-size: 14px; flex: 1; }
   
-  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-  .modal-title { font-size: 18px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
-  .modal-close { background: none; border: none; font-size: 20px; color: var(--text-tertiary); cursor: pointer; line-height: 1; padding: 4px; transition: color 0.2s; }
+  /* Modals */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.25); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 100; align-items: center; justify-content: center; padding: 2rem; }
+  .modal-overlay.visible { display: flex; }
+  .modal { background: var(--surface); border-radius: var(--radius-xl); padding: 2.5rem; width: 100%; max-width: 480px; box-shadow: 0 24px 80px rgba(0,0,0,0.12); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+  .modal-title { font-size: 18px; font-weight: 600; color: var(--text-primary); }
+  .modal-close { background: none; border: none; font-size: 18px; color: var(--text-tertiary); cursor: pointer; line-height: 1; font-family: inherit; padding: 0; }
   .modal-close:hover { color: var(--text-primary); }
-  
-  .modal-field { margin-bottom: 20px; }
-  .modal-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
-  
+  .modal-field { margin-bottom: 1.25rem; }
+  .modal-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-tertiary); margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .modal-input { width: 100%; font-family: inherit; font-size: 15px; padding: 12px 0; border: none; border-bottom: 0.5px solid var(--border-strong); background: transparent; color: var(--text-primary); outline: none; transition: border-color 0.15s; }
+  .modal-input:focus { border-bottom-color: var(--accent); }
   .dept-item-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   .animate-in { animation: fadeIn 0.4s ease both; }
+  .obj-card { animation: fadeIn 0.35s ease both; }
   
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
 </style>
 </head>
 <body>
@@ -232,12 +180,12 @@
   <aside class="sidebar">
     <div class="sidebar-logo">
       <span class="logo-text">
-        {{ session.client_name }}
+        <span style="color: #1e1e1e;">{{ session.client_name }}</span>
       </span>
     </div>
 
     <nav class="sidebar-nav">
-      <p class="nav-label">Visão Geral</p>
+      <p class="nav-label">Visão geral</p>
       <a class="nav-item active" href="/"><span class="nav-dot"></span>Estratégia</a>
       
       <p class="nav-label">Operacional</p>
@@ -249,15 +197,15 @@
     </nav>
 
     <div class="sidebar-footer">
-      <div class="user-pill">
-        <div style="display: flex; gap: 10px; align-items: center;">
+      <div class="user-pill" style="justify-content: space-between;">
+        <div style="display: flex; gap: 8px; align-items: center;">
             <div class="avatar">{{ session.user_name[:2] | upper }}</div>
             <div>
               <p class="user-name">{{ session.user_name }}</p>
-              <p class="user-role">Admin</p>
+              <p class="user-role">Logado</p>
             </div>
         </div>
-        <a href="{{ url_for('logout') }}" class="action-link danger" title="Sair do Sistema">Sair</a>
+        <a href="{{ url_for('logout') }}" style="font-size: 10px; color: #ff43c0; text-decoration: none; font-weight: bold;">SAIR</a>
       </div>
     </div>
   </aside>
@@ -266,18 +214,18 @@
 
     <div class="page-header">
       <div>
-        <p class="page-eyebrow">Estratégia Anual</p>
+        <p class="page-eyebrow">Estratégia anual</p>
         {% if macro_objectives %}
             <h1 class="page-title">{{ macro_objectives[0].title }}</h1>
-            <p class="page-cycle">Ciclo {{ macro_objectives[0].cycle }}</p>
+            <p class="page-cycle">{{ macro_objectives[0].cycle }}</p>
         {% else %}
             <h1 class="page-title">Defina o Objetivo Macro</h1>
             <p class="page-cycle">Ciclo atual</p>
         {% endif %}
       </div>
       <div class="header-actions">
-        <button class="btn" onclick="openModal('modal-dept')">Gerenciar Áreas</button>
-        <button class="btn btn-primary" onclick="openModal('modal-macro')">Editar Estratégia</button>
+        <button class="btn btn-macro-action" style="border-color: #1e1e1e; color: #1e1e1e;" onmouseover="this.style.backgroundColor='#EEEDFE'; this.style.color='#7371ff'; this.style.borderColor='#AFA9EC'" onmouseout="this.style.backgroundColor='var(--surface)'; this.style.color='#1e1e1e'; this.style.borderColor='#1e1e1e'" onclick="openModal('modal-dept')">Departamentos</button>
+        <button class="btn btn-primary" onclick="openModal('modal-macro')">Editar estratégia</button>
       </div>
     </div>
 
@@ -297,14 +245,14 @@
           <h2 id="dept-title">{% for d in departments if d.id == selected_dept_id %}{{ d.name }}{% endfor %}</h2>
           <span class="badge badge-purple" id="obj-count">{{ dept_details|length }} objetivos</span>
         </div>
-        <button class="action-link ghost" onclick="toggle('form-novo-obj')">+ Novo Objetivo</button>
+        <button class="btn-ghost" onclick="toggle('form-novo-obj')">+ Novo objetivo</button>
       </div>
 
       <form action="{{ url_for('create_operational') }}" method="POST" class="new-obj-form" id="form-novo-obj">
         <input type="hidden" name="type" value="dept_objective">
         <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-        <input class="form-input" type="text" name="title" placeholder="Qual o próximo grande passo da área?" style="font-size:14px; flex:1;" required>
-        <button type="submit" class="btn-save-sm">Criar Objetivo</button>
+        <input class="form-input" type="text" name="title" placeholder="Qual o próximo grande passo da área?" style="font-size:14px;flex:1;" required>
+        <button type="submit" class="btn btn-primary" style="border-radius:100px;padding:8px 18px;">Criar</button>
         <button type="button" class="btn-cancel-sm" onclick="toggle('form-novo-obj')">Cancelar</button>
       </form>
 
@@ -322,43 +270,45 @@
         <div class="obj-card" id="obj-{{ obj.id }}">
           <div class="obj-card-header">
             
-            <div style="flex: 1; padding-right: 24px;">
-              <p class="obj-eyebrow">Objetivo de Área</p>
+            <div style="flex: 1; padding-right: 1.5rem;">
+              <p class="obj-eyebrow">Objetivo</p>
               
-              <div id="view-obj-{{ obj.id }}">
+              <div id="view-obj-{{ obj.id }}" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                 <p class="obj-title">{{ obj.title }}</p>
-                <div class="obj-header-actions">
-                    <button class="action-link" onclick="toggleObjEdit('{{ obj.id }}')">Editar</button>
-                    <form action="{{ url_for('delete_operational') }}" method="POST" style="margin:0;" onsubmit="return confirm('Tem a certeza que deseja excluir este Objetivo e todos os seus KRs?');">
+                
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="btn-ghost-muted" style="padding:0; font-size:10px;" onclick="toggleObjEdit('{{ obj.id }}')" title="Editar Nome">✎ Editar</button>
+                    
+                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar este Objetivo e TODOS os seus KRs e Tarefas?');">
                         <input type="hidden" name="type" value="dept_objective">
                         <input type="hidden" name="item_id" value="{{ obj.id }}">
                         <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                        <button type="submit" class="action-link danger">Excluir</button>
+                        <button type="submit" class="btn-ghost-muted" style="padding:0; font-size:10px; color: #ff43c0;" title="Excluir Objetivo">🗑️ Apagar</button>
                     </form>
                 </div>
               </div>
 
-              <form action="{{ url_for('update_operational') }}" method="POST" id="edit-obj-{{ obj.id }}" style="display: none; align-items: center; gap: 8px; margin-top: 12px;">
+              <form action="{{ url_for('update_operational') }}" method="POST" id="edit-obj-{{ obj.id }}" style="display: none; align-items: center; gap: 8px; margin-top: 4px;">
                 <input type="hidden" name="type" value="dept_objective">
                 <input type="hidden" name="item_id" value="{{ obj.id }}">
                 <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
                 <input class="form-input" type="text" name="title" value="{{ obj.title }}" style="flex:1;" required>
                 <button type="submit" class="btn-save-sm">Salvar</button>
-                <button type="button" class="btn-cancel-sm" onclick="toggleObjEdit('{{ obj.id }}')">Cancelar</button>
+                <button type="button" class="btn-cancel-sm" onclick="toggleObjEdit('{{ obj.id }}')">×</button>
               </form>
             </div>
 
             <div class="obj-progress-wrap">
               <div class="obj-progress-label">
-                <span>Progresso</span>
+                <span>progresso geral</span>
                 <span>{{ obj_progress }}%</span>
               </div>
               <div class="ring-wrap">
                 {% set dash_offset = 100.5 - (100.5 * obj_progress / 100) %}
-                <svg width="44" height="44" viewBox="0 0 42 42">
-                  <circle cx="21" cy="21" r="16" fill="#F4F5F7" stroke="none"/>
-                  <circle cx="21" cy="21" r="16" fill="none" stroke="#E5E7EB" stroke-width="3"/>
-                  <circle cx="21" cy="21" r="16" fill="none" stroke="#7371ff" stroke-width="3"
+                <svg width="42" height="42" viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="16" fill="#f4f3f0" stroke="none"/>
+                  <circle cx="21" cy="21" r="16" fill="none" stroke="#D3D1C7" stroke-width="2.5"/>
+                  <circle cx="21" cy="21" r="16" fill="none" stroke="#7371ff" stroke-width="2.5"
                     stroke-dasharray="100.5" stroke-dashoffset="{{ dash_offset }}"
                     stroke-linecap="round" transform="rotate(-90 21 21)"/>
                 </svg>
@@ -367,20 +317,23 @@
           </div>
 
           <div id="collapsible-{{ obj.id }}" style="display: none;">
+            <div class="divider"></div>
+
             <div class="kr-section">
-              <p class="kr-section-label">Key Results & Tarefas</p>
+              <p class="kr-section-label">Key results</p>
               <div class="kr-list">
                 
                 {% for kr in obj.key_results %}
                 <div class="kr-item" id="kr-{{ kr.id }}">
                   
-                  <div class="kr-actions">
-                    <button class="action-link" onclick="toggle('kr-edit-{{ kr.id }}')">Editar Valores</button>
-                    <form action="{{ url_for('delete_operational') }}" method="POST" style="margin:0;" onsubmit="return confirm('Tem a certeza que deseja excluir este KR e as suas tarefas?');">
+                  <div class="kr-actions" style="display:flex; align-items:center; gap:10px;">
+                    <button class="kr-action-btn edit-color" onclick="toggle('kr-edit-{{ kr.id }}')">✎ Editar KR e Valores</button>
+                    
+                    <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar este KR e TODAS as suas tarefas?');">
                         <input type="hidden" name="type" value="kr">
                         <input type="hidden" name="item_id" value="{{ kr.id }}">
                         <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                        <button type="submit" class="action-link danger">Excluir</button>
+                        <button type="submit" class="kr-action-btn" style="color: #ff43c0;">🗑️ Apagar</button>
                     </form>
                   </div>
 
@@ -388,16 +341,16 @@
                     <input type="hidden" name="type" value="kr">
                     <input type="hidden" name="item_id" value="{{ kr.id }}">
                     <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                    <input class="form-input" name="description" type="text" value="{{ kr.description }}" style="flex:1; min-width:160px;" required>
+                    <input class="form-input" name="description" type="text" value="{{ kr.description }}" style="flex:1;min-width:160px;" required>
                     
-                    <span style="font-size:11px; font-weight:600; color:var(--text-tertiary);">ATUAL</span>
-                    <input class="form-input" name="current_value" type="number" step="0.01" value="{{ kr.current_value }}" style="width:80px;" required>
+                    <span style="font-size:10px; font-weight:600; color:var(--text-tertiary);">Atual:</span>
+                    <input class="form-input" name="current_value" type="number" step="0.01" value="{{ kr.current_value }}" style="width:72px;" required>
                     
-                    <span style="font-size:11px; font-weight:600; color:var(--text-tertiary);">META</span>
-                    <input class="form-input" name="target_value" type="number" step="0.01" value="{{ kr.target_value }}" style="width:80px;" required>
+                    <span style="font-size:10px; font-weight:600; color:var(--text-tertiary);">Meta:</span>
+                    <input class="form-input" name="target_value" type="number" step="0.01" value="{{ kr.target_value }}" style="width:72px;" required>
                     
-                    <button type="submit" class="btn-save-sm">Atualizar</button>
-                    <button type="button" class="btn-cancel-sm" onclick="toggle('kr-edit-{{ kr.id }}')">Cancelar</button>
+                    <button type="submit" class="btn-save-sm" style="background:#ff43c0;" onmouseover="this.style.backgroundColor='#d1379e'" onmouseout="this.style.backgroundColor='#ff43c0'">Salvar</button>
+                    <button type="button" class="btn-cancel-sm" onclick="toggle('kr-edit-{{ kr.id }}')">×</button>
                   </form>
 
                   <div class="kr-item-header">
@@ -427,18 +380,17 @@
                       <span class="task-meta">{{ task.owner_name }}</span>
                       <span class="task-meta">{% if task.deadline %}{{ task.deadline }}{% else %}Sem data{% endif %}</span>
                       {% if task.deliverable_link %}
-                          <a href="{{ task.deliverable_link }}" target="_blank" class="task-link">Anexo</a>
+                          <a href="{{ task.deliverable_link }}" target="_blank" class="task-link">LINK</a>
                       {% endif %}
                       
-                      <div class="task-row-actions">
-                          <button class="action-link" onclick="toggleTask('{{ task.id }}')">Editar</button>
-                          <form action="{{ url_for('delete_operational') }}" method="POST" style="margin:0;" onsubmit="return confirm('Excluir tarefa?');">
-                              <input type="hidden" name="type" value="task">
-                              <input type="hidden" name="item_id" value="{{ task.id }}">
-                              <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                              <button type="submit" class="action-link danger">Excluir</button>
-                          </form>
-                      </div>
+                      <button class="task-edit-btn" onclick="toggleTask('{{ task.id }}')">Editar</button>
+                      
+                      <form action="{{ url_for('delete_operational') }}" method="POST" style="display:flex; margin:0; align-items:center;" onsubmit="return confirm('Tem a certeza que deseja eliminar esta tarefa?');">
+                          <input type="hidden" name="type" value="task">
+                          <input type="hidden" name="item_id" value="{{ task.id }}">
+                          <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
+                          <button type="submit" class="task-edit-btn" style="color: #ff43c0; margin-left: 4px;">Apagar</button>
+                      </form>
                     </div>
 
                     <form id="edit-{{ task.id }}" action="{{ url_for('update_operational') }}" method="POST" class="edit-form">
@@ -452,27 +404,27 @@
                         <option value="Pausado" {% if task.status == 'Pausado' %}selected{% endif %}>Pausado</option>
                         <option value="Finalizado" {% if task.status == 'Finalizado' %}selected{% endif %}>Finalizado</option>
                       </select>
-                      <input class="form-input" name="description" type="text" value="{{ task.description }}" style="flex:1; min-width:120px;" required>
-                      <input class="form-input" name="owner_name" type="text" value="{{ task.owner_name }}" style="width:100px;">
-                      <input class="form-input" name="deadline" type="date" value="{{ task.deadline if task.deadline else '' }}" style="width:120px;">
-                      <input class="form-input" name="deliverable_link" type="url" value="{{ task.deliverable_link or '' }}" placeholder="URL do anexo" style="width:100px;">
-                      <button type="submit" class="btn-save-sm">Salvar</button>
-                      <button type="button" class="btn-cancel-sm" onclick="toggleTask('{{ task.id }}')">Cancelar</button>
+                      <input class="form-input" name="description" type="text" value="{{ task.description }}" style="flex:1;min-width:120px;" required>
+                      <input class="form-input" name="owner_name" type="text" value="{{ task.owner_name }}" style="width:80px;">
+                      <input class="form-input" name="deadline" type="date" value="{{ task.deadline if task.deadline else '' }}" style="width:110px;">
+                      <input class="form-input" name="deliverable_link" type="url" value="{{ task.deliverable_link or '' }}" placeholder="Link" style="width:80px;">
+                      <button type="submit" class="btn-save-sm">OK</button>
+                      <button type="button" class="btn-cancel-sm" onclick="toggleTask('{{ task.id }}')">×</button>
                     </form>
                     {% endfor %}
                   </div>
 
-                  <button class="action-link ghost" style="margin-top:12px;" onclick="toggle('add-task-{{ kr.id }}')">+ Adicionar Tarefa</button>
+                  <button class="btn-ghost-muted" style="margin-top:8px;" onclick="toggle('add-task-{{ kr.id }}')">+ Adicionar tarefa</button>
                   <form id="add-task-{{ kr.id }}" action="{{ url_for('create_operational') }}" method="POST" class="add-task-form">
                     <input type="hidden" name="type" value="task">
                     <input type="hidden" name="parent_id" value="{{ kr.id }}">
                     <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                    <input class="form-input" name="description" type="text" placeholder="Qual a próxima ação?" style="flex:1; min-width:160px;" required>
-                    <input class="form-input" name="owner_name" type="text" placeholder="Responsável" style="width:110px;">
+                    <input class="form-input" name="description" type="text" placeholder="O que precisa ser feito?" style="flex:1;min-width:160px;" required>
+                    <input class="form-input" name="owner_name" type="text" placeholder="Quem?" style="width:90px;">
                     <input class="form-input" name="deadline" type="date" style="width:120px;">
-                    <input class="form-input" name="deliverable_link" type="url" placeholder="Link" style="width:100px;">
-                    <button type="submit" class="btn-save-sm">Adicionar</button>
-                    <button type="button" class="btn-cancel-sm" onclick="toggle('add-task-{{ kr.id }}')">Cancelar</button>
+                    <input class="form-input" name="deliverable_link" type="url" placeholder="Link (opcional)" style="width:80px;">
+                    <button type="submit" class="btn-save-sm">Salvar</button>
+                    <button type="button" class="btn-cancel-sm" onclick="toggle('add-task-{{ kr.id }}')">×</button>
                   </form>
 
                 </div>
@@ -480,24 +432,23 @@
               </div>
 
               <form id="new-kr-{{ obj.id }}" action="{{ url_for('create_operational') }}" method="POST" class="new-kr-form">
-                <p style="font-size:11px; font-weight:600; color:var(--text-tertiary); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:4px;">Métrica de Sucesso (KR)</p>
+                <p style="font-size:11px;font-weight:600;color:var(--text-tertiary);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px;">Novo Key Result</p>
                 <div class="new-kr-row">
                   <input type="hidden" name="type" value="kr">
                   <input type="hidden" name="parent_id" value="{{ obj.id }}">
                   <input type="hidden" name="dept_id" value="{{ selected_dept_id }}">
-                  <input class="form-input" name="description" type="text" placeholder="Ex: Aumentar conversão de leads para 20%" style="flex:1; min-width:160px;" required>
-                  <input class="form-input" name="target_value" type="number" step="0.01" placeholder="Meta Alvo" style="width:100px;" required>
-                  <button type="submit" class="btn-save-sm">Criar KR</button>
+                  <input class="form-input" name="description" type="text" placeholder="Descrição do KR (ex: Aumentar Leads em 20%)" style="flex:1;min-width:160px;" required>
+                  <input class="form-input" name="target_value" type="number" step="0.01" placeholder="Meta" style="width:80px;" required>
+                  <button type="submit" class="btn-save-sm">Salvar KR</button>
                   <button type="button" class="btn-cancel-sm" onclick="toggle('new-kr-{{ obj.id }}')">Cancelar</button>
                 </div>
               </form>
-              <button class="action-link ghost" style="margin-top:16px;" onclick="toggle('new-kr-{{ obj.id }}')">+ Criar novo KR</button>
+              <button class="btn-dashed" style="margin-top:10px;" onclick="toggle('new-kr-{{ obj.id }}')">+ Novo KR</button>
             </div>
           </div>
-
           <div class="obj-card-footer">
-            <span class="obj-footer-meta">{{ obj.key_results|length }} Key Results vinculados</span>
-            <button class="btn" id="toggle-btn-{{ obj.id }}" onclick="toggleObjective('{{ obj.id }}')" style="font-size: 11px; padding: 6px 12px; background: transparent; box-shadow: none;">Expandir</button>
+            <span class="obj-footer-meta">{{ obj.key_results|length }} Key Results</span>
+            <button class="btn-ghost" id="toggle-btn-{{ obj.id }}" onclick="toggleObjective('{{ obj.id }}')">Expandir ▼</button>
           </div>
 
         </div>
@@ -512,7 +463,7 @@
 <div class="modal-overlay" id="modal-macro">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">Estratégia Macro</h3>
+      <h3 class="modal-title">Estratégia macro</h3>
       <button class="modal-close" onclick="closeModal('modal-macro')">×</button>
     </div>
     <form action="{{ url_for('save_macro') }}" method="POST">
@@ -520,14 +471,14 @@
           <input type="hidden" name="macro_id" value="{{ macro_objectives[0].id }}">
       {% endif %}
       <div class="modal-field">
-        <label class="modal-label">Norteador da Empresa</label>
-        <input class="form-input" name="title" type="text" value="{{ macro_objectives[0].title if macro_objectives else '' }}" placeholder="Ex: Dominar o mercado B2B" required>
+        <label class="modal-label">Título do objetivo</label>
+        <input class="modal-input" name="title" type="text" value="{{ macro_objectives[0].title if macro_objectives else '' }}" placeholder="Título do objetivo" required>
       </div>
       <div class="modal-field">
-        <label class="modal-label">Ciclo / Ano</label>
-        <input class="form-input" name="cycle" type="text" value="{{ macro_objectives[0].cycle if macro_objectives else '' }}" placeholder="Ex: 2026">
+        <label class="modal-label">Ciclo</label>
+        <input class="modal-input" name="cycle" type="text" value="{{ macro_objectives[0].cycle if macro_objectives else '' }}" placeholder="ex: 2026">
       </div>
-      <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:12px; border-radius:var(--radius-sm); font-size:13px; font-weight:600; border:none; cursor:pointer;">Salvar Estratégia</button>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;border-radius:100px;font-size:12px;">Salvar alterações</button>
     </form>
   </div>
 </div>
@@ -535,24 +486,23 @@
 <div class="modal-overlay" id="modal-dept">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">Gestão de Áreas</h3>
+      <h3 class="modal-title">Departamentos</h3>
       <button class="modal-close" onclick="closeModal('modal-dept')">×</button>
     </div>
     
-    <div id="dept-list-modal" style="margin-bottom:24px; display:flex; flex-direction:column; gap:8px; max-height:240px; overflow-y:auto; padding-right:4px;">
+    <div id="dept-list-modal" style="margin-bottom:1.5rem;display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto;padding-right:4px;">
       {% for dept in departments %}
       <form action="{{ url_for('save_department') }}" method="POST" class="dept-item-row">
         <input type="hidden" name="dept_id" value="{{ dept.id }}">
-        <input class="form-input" name="name" type="text" value="{{ dept.name }}" style="flex:1;">
-        <button type="submit" class="btn-save-sm">OK</button>
+        <input class="form-input" name="name" type="text" value="{{ dept.name }}" style="flex:1;font-size:13px;padding:10px 12px;border-radius:10px;">
+        <button type="submit" class="btn-save-sm" style="border-radius:10px;">OK</button>
       </form>
       {% endfor %}
     </div>
 
-    <form action="{{ url_for('save_department') }}" method="POST" style="padding-top:20px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:12px;">
-      <label class="modal-label" style="margin:0;">Adicionar nova área</label>
-      <input class="form-input" name="name" type="text" placeholder="Nome do departamento..." required>
-      <button type="submit" class="btn-primary" style="justify-content:center; border-radius:var(--radius-sm); font-size:13px; font-weight:600; padding:12px; border:none; cursor:pointer;">Criar Área</button>
+    <form action="{{ url_for('save_department') }}" method="POST" style="padding-top:1.25rem;border-top:0.5px solid var(--border);display:flex;flex-direction:column;gap:10px;">
+      <input class="form-input" name="name" type="text" placeholder="Nova área (ex: Marketing)..." style="font-size:13px;padding:12px;border-radius:12px;" required>
+      <button type="submit" class="btn btn-primary" style="justify-content:center;border-radius:100px;font-size:12px;">+ Criar departamento</button>
     </form>
   </div>
 </div>
@@ -591,18 +541,17 @@
     }
   }
 
+  // NOVO: Função para o Expandir/Recolher dos Objetivos
   function toggleObjective(objId) {
     const content = document.getElementById('collapsible-' + objId);
     const btn = document.getElementById('toggle-btn-' + objId);
     if(content && btn) {
         if(content.style.display === 'none') {
             content.style.display = 'block';
-            btn.innerHTML = 'Recolher';
-            btn.style.background = 'var(--surface-hover)';
+            btn.innerHTML = 'Recolher ▲';
         } else {
             content.style.display = 'none';
-            btn.innerHTML = 'Expandir';
-            btn.style.background = 'transparent';
+            btn.innerHTML = 'Expandir ▼';
         }
     }
   }
